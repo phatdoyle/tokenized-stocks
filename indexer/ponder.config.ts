@@ -6,7 +6,9 @@ export default createConfig({
   chains: {
     mainnet: {
       id: 1,
-      rpc: process.env.PONDER_RPC_URL_1 || "postgresql://patdoyle:Skateboarding1%21@localhost:5432/patdoyle",
+      // Use environment variable or fallback to a public RPC endpoint
+      // For production, set PONDER_RPC_URL_1 to your preferred RPC provider (Infura, Alchemy, QuickNode, etc.)
+      rpc: process.env.PONDER_RPC_URL_1 || "https://eth-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2",
     },
   },
   contracts: {
