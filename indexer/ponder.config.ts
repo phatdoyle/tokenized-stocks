@@ -1,4 +1,4 @@
-import { createConfig, loadBalance } from "ponder";
+import { createConfig, loadBalance, rateLimit } from "ponder";
 import { http, fallback } from "viem";
 import { OndoGMTokenABI } from "./abis/OndoGMTokenABI";
 import { RobinhoodTokenABI } from "./abis/RobinhoodTokenABI";
@@ -9,8 +9,8 @@ export default createConfig({
       id: 1,
       // Load balance requests between Chainstack and Alchemy RPC providers
       rpc: loadBalance([
-        http("https://ethereum-mainnet.core.chainstack.com/63e5326cba291681b63ea2f934b29cb4"), //ChainStack RPC
-        http("https://eth-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), //Alchemy RPC
+       // rateLimit(http("https://ethereum-mainnet.core.chainstack.com/63e5326cba291681b63ea2f934b29cb4"), { requestsPerSecond: 30 }), //ChainStack RPC
+        rateLimit(http("https://eth-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), { requestsPerSecond: 30 }), //Alchemy RPC
       ]),
     },
     arbitrum: {
@@ -18,8 +18,8 @@ export default createConfig({
       // Use environment variable or fallback to a public RPC endpoint
       // For production, set PONDER_RPC_URL_42161 to your preferred RPC provider
       rpc: loadBalance([
-        http("https://arbitrum-mainnet.infura.io/v3/3f152de5c51d4490b60883598c1d8418"), //Infura RPC
-        http("https://arb-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), //Alchemy RPC
+        //rateLimit(http("https://arbitrum-mainnet.infura.io/v3/3f152de5c51d4490b60883598c1d8418"), { requestsPerSecond: 30 }), //Infura RPC
+        rateLimit(http("https://arb-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), { requestsPerSecond: 30 }), //Alchemy RPC
       ]),
       
     },
