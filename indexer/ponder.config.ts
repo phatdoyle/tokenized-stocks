@@ -1,5 +1,5 @@
-import { createConfig } from "ponder";
-
+import { createConfig, loadBalance } from "ponder";
+import { http, fallback } from "viem";
 import { OndoGMTokenABI } from "./abis/OndoGMTokenABI";
 import { RobinhoodTokenABI } from "./abis/RobinhoodTokenABI";
 
@@ -7,15 +7,21 @@ export default createConfig({
   chains: {
     mainnet: {
       id: 1,
-      // Use environment variable or fallback to a public RPC endpoint
-      // For production, set PONDER_RPC_URL_1 to your preferred RPC provider (Infura, Alchemy, QuickNode, etc.)
-      rpc: process.env.PONDER_RPC_URL_1 || "https://eth-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2",
+      // Load balance requests between Chainstack and Alchemy RPC providers
+      rpc: loadBalance([
+        http("https://ethereum-mainnet.core.chainstack.com/63e5326cba291681b63ea2f934b29cb4"), //ChainStack RPC
+        http("https://eth-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), //Alchemy RPC
+      ]),
     },
     arbitrum: {
       id: 42161,
       // Use environment variable or fallback to a public RPC endpoint
       // For production, set PONDER_RPC_URL_42161 to your preferred RPC provider
-      rpc: process.env.PONDER_RPC_URL_42161 || "https://arb1.arbitrum.io/rpc",
+      rpc: loadBalance([
+        http("https://arbitrum-mainnet.infura.io/v3/3f152de5c51d4490b60883598c1d8418"), //Infura RPC
+        http("https://arb-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), //Alchemy RPC
+      ]),
+      
     },
   },
   contracts: {
@@ -1379,7 +1385,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb4d38a3f8960c1a97fa50d3d2733949d11308dcd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VEUrobinhood": {
       chain: "arbitrum",
@@ -1397,7 +1403,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa211fad11753a4a8c7ed3dfd44e9d0e5e41f49be",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LNGrobinhood": {
       chain: "arbitrum",
@@ -1421,7 +1427,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb3d5f2c2e71faedf5da685dae2095fbc5fe68aff",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VDErobinhood": {
       chain: "arbitrum",
@@ -1439,7 +1445,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xeaab60dded22492b13522258862029419f4b8dd5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPUUrobinhood": {
       chain: "arbitrum",
@@ -1463,7 +1469,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5dd2a4f047eba1a5b3ccd80590b8073fb9357fee",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ADTXrobinhood": {
       chain: "arbitrum",
@@ -1475,13 +1481,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdfd65831b491ad1cb07f8efee917180726dd71a3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VIRTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2adf3c3d9459b4a7eb31a7689796a0d892585fde",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "YBITrobinhood": {
       chain: "arbitrum",
@@ -1499,7 +1505,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x54a416c8dc9ee287ec4ff348feae6c729456e54b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XPAYrobinhood": {
       chain: "arbitrum",
@@ -1529,7 +1535,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x14dae4a6631eba0938ea77e432119031bb73a4fc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ALLWrobinhood": {
       chain: "arbitrum",
@@ -1553,13 +1559,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0f1399ea28ef289940f2784160ca4ef198ff1107",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WOOFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x34507bf23d2ea05fdc8b52711bb6b9afe9f79c46",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ZSLrobinhood": {
       chain: "arbitrum",
@@ -1577,13 +1583,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5e3dee5b01db55ecdec65427986fd798eb600bd1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SAVArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x71387f3c243e1943408d7e15abf4fc0cd346925d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HOODrobinhood": {
       chain: "arbitrum",
@@ -1601,13 +1607,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc1a6eca4afcdecbab2bb6404f8e2c7c084187237",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IDXXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcdf7a022c718b240d2bc9f989941bea9246f5b61",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JKHYrobinhood": {
       chain: "arbitrum",
@@ -1643,7 +1649,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xadac1c560950087790c20ea9ece2ba4617c3afb0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LBRDArobinhood": {
       chain: "arbitrum",
@@ -1679,19 +1685,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfad8b77feab9db942cb4c7cdc108edbd53b6b2a9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AIZrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe8adf1525a24407d0a9e6585170e46c3d2e71e59",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x69a470c65f751ea1bc0140624d5be7517bf56efa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EIXrobinhood": {
       chain: "arbitrum",
@@ -1703,7 +1709,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1c66bef6ff26fc263f014200fc52012b9421d481",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TDYrobinhood": {
       chain: "arbitrum",
@@ -1727,7 +1733,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3bd40e7d4ba742165838fb23f33eed76a3b5f566",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ONrobinhood": {
       chain: "arbitrum",
@@ -1739,7 +1745,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc253e9e40a7310cd8067730f32079fd470dae3d7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MSCIrobinhood": {
       chain: "arbitrum",
@@ -1757,25 +1763,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdcd2303fb2a6e0064c4b3075b86209d297355921",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "YUMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x05f734f3fb2dbef595a81119fd674a4cb101e7db",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WECrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbbeb66255fd78aedd258f4f975b3f910a2b52767",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "USD_ETFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4197dccd7344655c3d10d4b2bf51a8e3b4bb223b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OPENLrobinhood": {
       chain: "arbitrum",
@@ -1793,13 +1799,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb69870de985f5fcb0d6735440e301c38459a26b7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LKQrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x02a57f57ea2ff58e1ec4b7766c00067d61ada43c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "METrobinhood": {
       chain: "arbitrum",
@@ -1823,13 +1829,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7fd7440b2c6ac891cd1e22d043dc3305ee998047",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x28f41e8419803d4353b6b9fde886cd897a3cfdfa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RMDrobinhood": {
       chain: "arbitrum",
@@ -1853,13 +1859,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2d585050aad6fc90329f40a28ae1828b8efd7115",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MAGXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8a19b12e6316dc7cc227c1f87f22123477707095",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ASPIrobinhood": {
       chain: "arbitrum",
@@ -1889,7 +1895,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3da5bc51f726c10136743a40d3bb632b5a0a684e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IXUSrobinhood": {
       chain: "arbitrum",
@@ -1907,7 +1913,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x98da519a6d4f3337ef27adf9cb16ac4f4ded32d8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CGDVrobinhood": {
       chain: "arbitrum",
@@ -1919,7 +1925,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe3888707743744899668ae526fffebe24927ff39",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MTDRrobinhood": {
       chain: "arbitrum",
@@ -1937,7 +1943,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf7e1172cc6076964daec7c1ce203b3fdb0783bfb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TDWrobinhood": {
       chain: "arbitrum",
@@ -1949,25 +1955,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc43a05412638531394d1b180df5d80b84b5720bc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KSCProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbdc22352bd8b0fa9b98f020fef012a66677d06c0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6d4850571fa06bc6593de135d3d8171e8c2f8f18",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BYRNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x315e6189eaa795a476f731259a0e169e41078e74",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ARKQrobinhood": {
       chain: "arbitrum",
@@ -1979,7 +1985,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe15913a7f23f26e19872a9940badfe8dd82fb487",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "QRVOrobinhood": {
       chain: "arbitrum",
@@ -1991,7 +1997,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5e277b864d3ae680545306c4b593993709f92d19",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSCOrobinhood": {
       chain: "arbitrum",
@@ -2003,7 +2009,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x90dc4a546b75073c584e209f435e01fbfee78811",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TRVrobinhood": {
       chain: "arbitrum",
@@ -2015,19 +2021,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe95dc3d06059e3b43df54af6255472649b739a26",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OTISrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x30a3986a2af01a2d6387f3ca1638f80fcfa8cf0d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EATrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x35f33c7828fd4f863610ea0a2c36e8ae9ba98010",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OPTTrobinhood": {
       chain: "arbitrum",
@@ -2045,7 +2051,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x856b6ca21ec861bac7c2e55dd4a97b526a4aa3ad",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HIBSrobinhood": {
       chain: "arbitrum",
@@ -2069,7 +2075,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdf2a702f270946061758d10309db6bc2bda64a0c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PCSArobinhood": {
       chain: "arbitrum",
@@ -2081,7 +2087,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcce473d9a9c47797b7e3c176a4704b0e81468ddb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ATAIrobinhood": {
       chain: "arbitrum",
@@ -2105,7 +2111,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf3685dadeb26c0e8ec4712d628cd4fabc08fb2fe",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DAVErobinhood": {
       chain: "arbitrum",
@@ -2123,25 +2129,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc05f056804efd64ca09e9043e3a6d1e2a47701ad",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TOIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6e5b0a1b4c59a34d64cbef650846279a277ddfff",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GSYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcf48c85f96f45ebaca67f58c560288ab46cca2ba",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CPBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xda3bea31d96a9bf6f9db61732987fc300c579ba5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DRIrobinhood": {
       chain: "arbitrum",
@@ -2171,31 +2177,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4acc7ec5a62db6b272c44304216847324c53aa25",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SNArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbff562843de12deb2ddb3a2929c7ab9c205dca81",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PEGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdfc148fa11acaac9191e0c87eed956abec74c869",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IQVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x05473a078e1896d69c60b5fff571668e5e5bd8cc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SOLVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcb845303aa57e2158b0248a427446f52640eba25",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ROKrobinhood": {
       chain: "arbitrum",
@@ -2213,7 +2219,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf36f0410b5824eff93ab7278ed8a9e8a02e986ee",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EWJrobinhood": {
       chain: "arbitrum",
@@ -2267,7 +2273,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x30e96f3c3815db44aa1af46b812320a641de9532",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TRMDrobinhood": {
       chain: "arbitrum",
@@ -2285,13 +2291,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa9b9fdde53523c9bf6a3077afd7fc11cc2e886f4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LTBRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x41c601e6ea622e4252d2e110db3181bcf17a26d8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RLMDrobinhood": {
       chain: "arbitrum",
@@ -2327,7 +2333,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf2a9400691904cac43852c77dc4686a9871b99fa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BMBLrobinhood": {
       chain: "arbitrum",
@@ -2345,13 +2351,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x326b70802ae5fcb78bdef008c36700ae26e8d5e9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc5059236332706c1969de2d5afa20da7b099582f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BTCZrobinhood": {
       chain: "arbitrum",
@@ -2375,13 +2381,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x02c1ebf6a0db01788cca45fd232ed25afebb819e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AVTRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8e5a25b0b5b5aee650d7240410258ebdcdc09de2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SOBRrobinhood": {
       chain: "arbitrum",
@@ -2405,7 +2411,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9cb6eb064a47ad8746a7dd4395089f09a38e8b42",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UECrobinhood": {
       chain: "arbitrum",
@@ -2417,7 +2423,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8697305fb61172127cac9d37cdb865b57d9fcd19",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SVOLrobinhood": {
       chain: "arbitrum",
@@ -2429,13 +2435,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6451f7390c08d7b2a0ab8f3657e947b92e83f375",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CNHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x78a22e4a329cf60992fb6b58e5cbe04934caa20b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EVLVrobinhood": {
       chain: "arbitrum",
@@ -2447,7 +2453,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4414e2967945c63cc54e08234bebc2f6f3ab48b2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FNGUrobinhood": {
       chain: "arbitrum",
@@ -2483,37 +2489,37 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x03ff3d5807d5fd92caa0e19af250c1bc787c6167",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HIGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xea172287546f2d5cd78dcce2a24031e2b4618d21",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CDWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfc1dd994baf647ba9718e7d881f9c4d4b7ae457f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TROWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9f8ecab390ef3f22cf361d160208c6c307393b65",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NWSArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x03eb0d309bdc347698be133b3ff069627b6358cb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WMBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xde10a42d1ab2f431811f84658e0af80ecf6dea9c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SRErobinhood": {
       chain: "arbitrum",
@@ -2531,7 +2537,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x223e7dc33cf32c85ef0407220560197ffc0d33fa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BGrobinhood": {
       chain: "arbitrum",
@@ -2621,13 +2627,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa126bf3b50f233ff29025d38109410069b83ddb0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FXFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb7c904736ead8425b8ea6b31e3f3fd218bcbc0ba",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CGCrobinhood": {
       chain: "arbitrum",
@@ -2639,19 +2645,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0bcb2f9f477e5be3faec506799701b2eb4592b41",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ADGMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5d5c157ac0e4dfa7e2ccddceff77e02408415d2d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CPRIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6e4acf6be126d835910bcba77a34385418961f2d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MSGMrobinhood": {
       chain: "arbitrum",
@@ -2705,7 +2711,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x34ec00f299fe1fc9739b81527cad568cd35a5b71",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HBANrobinhood": {
       chain: "arbitrum",
@@ -2729,25 +2735,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xaeeb9c44736907d9e8bd1308e39aec22c049382b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AIGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x557568629c5e1ae72fca00efd8d56357e9fbd8a2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PKGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdf5b409d3314595c152947e795cbe228dff05e9d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CSXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd41d2d5b0219f485212f55d306644d91d2237048",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PPTArobinhood": {
       chain: "arbitrum",
@@ -2873,7 +2879,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x11cde6e432eb467cbbf1ef31a8788a26522d3ebb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EXCrobinhood": {
       chain: "arbitrum",
@@ -2885,13 +2891,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5fd84f29b30440a386494b39e0a02d422a83c701",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MHKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4b3554265dfcc6a241c1f9dd36f46129b17968cc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LYVrobinhood": {
       chain: "arbitrum",
@@ -2915,7 +2921,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xee1ec34a47a5465211459f7e32b922ecd64184c4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GRNYrobinhood": {
       chain: "arbitrum",
@@ -2933,7 +2939,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4d429498f3bfe16a24a65cbe220138b61d4e16e9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TLNrobinhood": {
       chain: "arbitrum",
@@ -2981,25 +2987,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x63d87cff67b2e33dd4baa42abb2040a3a281b158",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ICSHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9b26a91b05a89220ad7f15e71ff10fa7657c903e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SNYRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x08aba12593b0e775a526c4b068db825040462c59",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EVGOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x78f2877f36d7002ad4840d8841deb5f9a0be55f3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PLTDrobinhood": {
       chain: "arbitrum",
@@ -3029,7 +3035,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc969dc0197e373e873e2624200dc2fc044776746",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BNrobinhood": {
       chain: "arbitrum",
@@ -3047,7 +3053,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x01f469ca535eb99b84df730f5a5b02ccbe3f370a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MCHIrobinhood": {
       chain: "arbitrum",
@@ -3065,7 +3071,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xce6045c1f967bbc1bc579d8c7fb378630f657ad5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FETHrobinhood": {
       chain: "arbitrum",
@@ -3083,25 +3089,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe24ef76006b9b9abed80e16ff0898fb54c8aae00",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HYGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x304237da78a92d3b822c1459c92f50fd9b4720dd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ONEQrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd53260427933d69cd37e5106eb842ce143c06d5a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MTBArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf2e81e273bdbb0ff4c88e0dfdb67fecf6404097a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SMrobinhood": {
       chain: "arbitrum",
@@ -3119,19 +3125,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd68d9773893f0b66bf76d721e372e95816aaca14",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JBBBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x87a1731422402446c5c646eadcb497c49a382cda",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SBLKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3075d39ab822b1cf1e264695ed2bab1267a2ab94",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VMARrobinhood": {
       chain: "arbitrum",
@@ -3149,7 +3155,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe106118f75a3d38dd5a1de923bbe54d65c1e5fd6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SSRMrobinhood": {
       chain: "arbitrum",
@@ -3173,13 +3179,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9e9168c34d6d2d55f42e88b78a0645cc905209ce",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SRADrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x51e30c72e7226681e7fa639e6c4374909686b80a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SLSrobinhood": {
       chain: "arbitrum",
@@ -3371,7 +3377,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb697678e9a763e01336be0f88fb8da0f49cb100f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PTIRrobinhood": {
       chain: "arbitrum",
@@ -3401,7 +3407,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9c10f0d69b7df148fe266cbc3b67ce39bd2e5d79",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPMOrobinhood": {
       chain: "arbitrum",
@@ -3461,13 +3467,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x125aa12a92934d312c87315f65c3e5ae5566659c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MORTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7b8d318addac2f1c62d6b89119f803ba42cb7d06",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IJHrobinhood": {
       chain: "arbitrum",
@@ -3491,31 +3497,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0320a25d342f27bc1aec25f40ab03913c1801887",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FNGGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4375886dfc06762aa3c203887ec1ac1bcb72a542",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AVSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4a915fe4fb2564deb1ea6515348748f1feabf9dd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CURErobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xec947a946826e7aa73d0b74245c98a6e1f953872",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PFFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc8baef74020f42b87085a2a36e23b005b89e1558",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CSWCrobinhood": {
       chain: "arbitrum",
@@ -3527,7 +3533,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7c8fa0ae9da5a58c69bb6f84ef8aa448ac354bda",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EGOrobinhood": {
       chain: "arbitrum",
@@ -3539,13 +3545,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x360db5a8ba5ca33de702af64f71291f0fc340823",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ENTGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xebb571ea092d903d362fcb7b091c71dde503fc5a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NLRrobinhood": {
       chain: "arbitrum",
@@ -3563,7 +3569,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe67ec8782147dc5f4aae243f230b3d15fc951da7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RPRXrobinhood": {
       chain: "arbitrum",
@@ -3581,13 +3587,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb133a9b508dd3222869a3e10a730266e2907984e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TNKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc59b3b3ab85e4d9180a02e3170d65d76568a371c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MASSrobinhood": {
       chain: "arbitrum",
@@ -3623,19 +3629,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5fee9985f41b48c1df458db04b39d0ecc0ba0d4d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FDNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x31d515eb79b422b00ed59287fe5a53fd5d667fba",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SFYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x884ae9b59f049944c07fd4b5722a6efc364be302",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CLMTrobinhood": {
       chain: "arbitrum",
@@ -3647,7 +3653,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4eb0d5e44a40306321389921a1d464d96ee9d431",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PLUGrobinhood": {
       chain: "arbitrum",
@@ -3857,13 +3863,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa4ea4a1515b01fef4a622c6fd7419f6d495dc525",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LNTHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x882629d14c6daa4261c0a0b54f04509eaef9401c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "METCrobinhood": {
       chain: "arbitrum",
@@ -3875,7 +3881,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9371832b87c332938c1d077e2a09238b3e36dde3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ERXrobinhood": {
       chain: "arbitrum",
@@ -3887,7 +3893,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc57d398e318bdc4d66043ae9caf13c179ea0fa09",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MATrobinhood": {
       chain: "arbitrum",
@@ -3905,7 +3911,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xaa499d86f19bfc66ace9e9602b5211c09d0b6a3f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UROYrobinhood": {
       chain: "arbitrum",
@@ -3917,25 +3923,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd6679b65e0f16c4c1d3fe36364b5c29cb79ad515",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AUUDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x76697c264872f11ece7a7939cf03ba3fb9fda102",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VFHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7ed1fdcbb5e111cc8b08005dafeb599661d0ee88",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WEBLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x174d1f907cc5f2f90560ac59bd60d7d1ec78dd73",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TWGrobinhood": {
       chain: "arbitrum",
@@ -3965,7 +3971,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7bd55fb35d8f59745c948d1e4f2e42d78fce9ffd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CQQQrobinhood": {
       chain: "arbitrum",
@@ -3983,7 +3989,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3534b261a33709d0656cb8f7f8b317036cc8a1f8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CPERrobinhood": {
       chain: "arbitrum",
@@ -3995,13 +4001,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7cf0ea440af65c803aa6cafb01595436ea70b261",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GILrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9754a16a346df954e9840e672883e1617cc0e28e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IGMrobinhood": {
       chain: "arbitrum",
@@ -4025,7 +4031,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcf28207ec44cb88639d25c8b5a1d46f40f8a5aee",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DGProbinhood": {
       chain: "arbitrum",
@@ -4049,13 +4055,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc698f83746848243bcdf1508b2775c950fced1d4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EXErobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x99407ae345b68db9926140a4672dce1e66aeb666",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NINErobinhood": {
       chain: "arbitrum",
@@ -4067,25 +4073,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd975ab8960dc40a25536683779627d8c2f9dcca2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BDTXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x477b762eaacb8df16a1ff5db0eb1de3cf65ee3b8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CHKProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6fda9d34157bb7eb5ae9cb018eee59aad4cb2a5d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CLOIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xae22a7bc19216f84cd051d640b22d961e89d4c7b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STUBrobinhood": {
       chain: "arbitrum",
@@ -4109,19 +4115,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xaf269f77d64442801210b47d50b958eee6beaffe",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FIATrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9fae6d6b931e7873347ee0e9c724cef79098f468",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CARTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc1f611d691cd1cb156ddecbf78ca3de67397639a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ANFrobinhood": {
       chain: "arbitrum",
@@ -4133,13 +4139,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x97713403dbb2a8f5e577989c04e844a11124f1c3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SLIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x17e601657be1e394b50b5633164a1e287b41d893",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KTTArobinhood": {
       chain: "arbitrum",
@@ -4151,7 +4157,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfe52e9d40dbedbeed4cbbc6e0472b76577788aa9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LEVIrobinhood": {
       chain: "arbitrum",
@@ -4265,7 +4271,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8803d31b5acfadf72cd98ad27f38bef1d72109bd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GRALrobinhood": {
       chain: "arbitrum",
@@ -4277,19 +4283,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5c7afd6c2163f23e6bf7e13d4670b158ff3201b6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JYDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb9d83c834f567be7e1405849e3d2ad5b06adbdc6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FEATrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb49a63acda01fe14686e440b725fc542aff58956",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "USAUrobinhood": {
       chain: "arbitrum",
@@ -4319,13 +4325,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0664d5c67e9b609f2e806c3e101e81b7d9bd2cca",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HELProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3b382e8ed0f1e616f96ab5c38acb3f7af61a53fc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STAIrobinhood": {
       chain: "arbitrum",
@@ -4337,7 +4343,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf290e53a12c1531aa7490e28ef5fade9216763cd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DDDrobinhood": {
       chain: "arbitrum",
@@ -4349,7 +4355,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5e55795ce7b1949e5f3fb5ec825921da276d4b4f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MSFOrobinhood": {
       chain: "arbitrum",
@@ -4367,7 +4373,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5778f618041358e78d5b4ae95ad52c20a6156acd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SLQTrobinhood": {
       chain: "arbitrum",
@@ -4409,7 +4415,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbd88bb9d0740f8570758a44dc547c8ffc2eda4c1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VWOBrobinhood": {
       chain: "arbitrum",
@@ -4457,13 +4463,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa35d08ab2b77b40b20ed5cf361967556eb64af40",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STROrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcc804509abc2180be2fa0e8b8d79fc2850f0fb50",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMBArobinhood": {
       chain: "arbitrum",
@@ -4481,7 +4487,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdeec2f4f17498a57ee7ffaefadad5f1c490e5eb3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ICLNrobinhood": {
       chain: "arbitrum",
@@ -4493,19 +4499,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa786762eb2e3e72d2bde02c88b288b479df0cb47",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MVISrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x06c4faa247b7779595c4fedce39eb21a398a8535",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BJrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x146ced1bbba45e12964e6060ae0652133b42f22c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SBFMrobinhood": {
       chain: "arbitrum",
@@ -4517,19 +4523,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7fc8b699f9eb47b836c492247dbae197bab6f0a7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IGVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdd58fae1ad9a63553fe025abd6b48bb224e0dcc7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ARQTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbe7e64641f157797da3eab6f9d6253a188c4a1d6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SATSrobinhood": {
       chain: "arbitrum",
@@ -4583,13 +4589,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1c0f67aff75fefc30859fa0c249d444333b3dbc9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2d6de8fa31f9508a55ef7dc6629c620bce4d900c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ZTSrobinhood": {
       chain: "arbitrum",
@@ -4607,7 +4613,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x09dc4614583643b3b75283cef7f87e41f1cc0822",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "URIrobinhood": {
       chain: "arbitrum",
@@ -4637,7 +4643,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf3232546dd8430040834651ee103c3dce0bb3872",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GPNrobinhood": {
       chain: "arbitrum",
@@ -4667,7 +4673,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa82f45a79a8fed580e64e00a1065433789fce436",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPUSrobinhood": {
       chain: "arbitrum",
@@ -4685,7 +4691,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x76c35e416b961e5b2b1291a7a8a0028c8c0624c9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GELSrobinhood": {
       chain: "arbitrum",
@@ -4703,7 +4709,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x326e034beeb82a98842ed1317e40d02e5c5c6be3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VNMrobinhood": {
       chain: "arbitrum",
@@ -4715,7 +4721,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc94816618937e400f00b101aacba9468a1a17624",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RDTLrobinhood": {
       chain: "arbitrum",
@@ -4763,13 +4769,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x227cdcd928ba806d1c8a552460bc86afb698ce19",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NSCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1467a5c41d976fa20039da77160a0d98059a78de",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MOHrobinhood": {
       chain: "arbitrum",
@@ -4811,7 +4817,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1a3f5238ced4ae6b24ad6e6d985af330f68cd3b9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BXSLrobinhood": {
       chain: "arbitrum",
@@ -4841,7 +4847,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x20cb6924d2a9e813b38f6d0667970212bc9be324",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FBYrobinhood": {
       chain: "arbitrum",
@@ -4859,7 +4865,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xee7e7033f1b3fe0cafef8269308410cdb60a26ab",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VZLArobinhood": {
       chain: "arbitrum",
@@ -4877,7 +4883,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6702f758fb951e2b6f5e3a90994a2f1755c6d539",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PENGrobinhood": {
       chain: "arbitrum",
@@ -4889,7 +4895,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc7442c06eb018e9f5eb0d21d99b41b3dd11044c7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FIVNrobinhood": {
       chain: "arbitrum",
@@ -4901,7 +4907,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4c8b22e1b48804e5bd311e40821d47ad1f7a6653",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ABATrobinhood": {
       chain: "arbitrum",
@@ -4913,7 +4919,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb27c4a6f56ae4934b6fb3f20e98316f48bb8bf76",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CYBRrobinhood": {
       chain: "arbitrum",
@@ -4961,7 +4967,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0135b387742febe9b59b3ce99dfb792d79407f1a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NFLYrobinhood": {
       chain: "arbitrum",
@@ -4991,7 +4997,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc4649e54cfce9dfa4660cfb44a91ad276b732738",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VXUSrobinhood": {
       chain: "arbitrum",
@@ -5027,7 +5033,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc8bf0a5d8beb9f1177ae4d8622bb3799a9f277bc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IBKRrobinhood": {
       chain: "arbitrum",
@@ -5135,7 +5141,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x99d265eb5a614f4c9019d54ff20690c4fc38b868",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BCTXrobinhood": {
       chain: "arbitrum",
@@ -5147,7 +5153,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x893537007f0d188cdb88386065d43fd5502cdf93",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CLOVrobinhood": {
       chain: "arbitrum",
@@ -5201,13 +5207,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9c1b51b51e66e809bf759f925d40813a085ab174",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbd0a8e13948bd0d76f3793ae046f0ce238978772",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CBOErobinhood": {
       chain: "arbitrum",
@@ -5249,7 +5255,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbf25e1c5a49b37d7e7ed6daa9604f085eec5b898",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRWVrobinhood": {
       chain: "arbitrum",
@@ -5285,7 +5291,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x27fa0aef8a283c3e9c6af048bc3b60b0e364cde4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TMFCrobinhood": {
       chain: "arbitrum",
@@ -5303,7 +5309,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7e7786a1084a4b4ccc1c7f0d9c61d372c5b2e1c4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MISTrobinhood": {
       chain: "arbitrum",
@@ -5315,7 +5321,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5d0e644c6ba388ec804f2fe7558acb1ab0fccb58",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HYFMrobinhood": {
       chain: "arbitrum",
@@ -5339,7 +5345,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8b0d743443dfc8f2f6a064cf810e1e986cc80509",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRKrobinhood": {
       chain: "arbitrum",
@@ -5351,19 +5357,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x972cdecb69579d1eee36520bbf1f69a1c1ccbe32",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ECXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa450ca489e4ada4ab95f7e0b335b4b150c1bee8e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NVDGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4ef6ea1d6b4de8d921eb2e90aaeb75f05a438cf5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSHArobinhood": {
       chain: "arbitrum",
@@ -5375,7 +5381,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x85ca08e351852e0422869df8f043e5296f8cb751",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ITRMrobinhood": {
       chain: "arbitrum",
@@ -5399,7 +5405,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdabd4e4a4f13e7fef1e878e22ef8da9c7cc93c24",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UGROrobinhood": {
       chain: "arbitrum",
@@ -5411,7 +5417,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbb14cae0eb0c7cfb3df6134e14b0a3f89c0fe972",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LESLrobinhood": {
       chain: "arbitrum",
@@ -5423,7 +5429,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf3cfde192806edc3b4e1e5f5f50e6fb593cdb7dd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "INMBrobinhood": {
       chain: "arbitrum",
@@ -5435,7 +5441,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x349be60cb92be01c529b5aff377e83fc6589f47e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "INTJrobinhood": {
       chain: "arbitrum",
@@ -5477,13 +5483,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2c64d2c262d778826a11d084aef832bf68a9c688",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VMCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6f401b7a5dce80d077816830f268ffd22cc9b92f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FMCrobinhood": {
       chain: "arbitrum",
@@ -5519,7 +5525,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x659fe7f99088698ac3b16ba5b8fe701b4a1ea604",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ULTYrobinhood": {
       chain: "arbitrum",
@@ -5561,19 +5567,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfb71aacf81f096afd35ca4a83849edf93db5a185",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CAHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8b2b869e5f519f7e190ab003ac828bdbb739c457",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ACGLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc8cefe37aea845c8c9d1c6f9a535c9f650538219",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CFrobinhood": {
       chain: "arbitrum",
@@ -5597,19 +5603,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x69de36076abe25ef847cac7d6a2038f5d4dc8064",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CVRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x12580ed127fc3b5e69fafbebddb4c01e4bac1f6a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LHSWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6f03692f4e807a498be7b5b8d5d7d2f9cc6080cd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SKYErobinhood": {
       chain: "arbitrum",
@@ -5645,19 +5651,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x13189aefb5eeff7700a045f16e7a4c1f270d0e24",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FTSMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x725c53b6667ac32ae5d650c74213930220577b15",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VALrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8418bfdf842088323a63f712f194a763f21d1b3a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BLNKrobinhood": {
       chain: "arbitrum",
@@ -5675,13 +5681,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x282739b3d8fcd581a43e913f3ca565f7157c3681",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OPFIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe749ba00950a78d89bfa058261056beb92437176",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GPIXrobinhood": {
       chain: "arbitrum",
@@ -5693,19 +5699,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xeb82d1596b9f93f97ff388ddf639ce27e68bc648",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MUBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8a6961cc91476c5802ecbcdaaecbb67ef81fa6a4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VCSHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc8f88db4adb43644bdfdaef85c6db8037d2f68e9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BNZIrobinhood": {
       chain: "arbitrum",
@@ -5717,13 +5723,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xaa552b93910267f588a7c5ecbc846f98403a7baa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JBIOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x35517bcf8ef88dbcdd69f02c4da9417ddeb6b22c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CNQrobinhood": {
       chain: "arbitrum",
@@ -5741,7 +5747,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x43a456783587d0aefea3750fef787ac113aac8c3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AWKrobinhood": {
       chain: "arbitrum",
@@ -5783,7 +5789,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8ab219f2813889b30c294b0f31dc3b88e37db66a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MDLZrobinhood": {
       chain: "arbitrum",
@@ -5837,19 +5843,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x90f521f854f1f0595df4fdc44f8e5c524eba499d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FVRRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3d8a36ef29faeea71d90d80da9e8ad71cfbc20fd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NTRArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbd416593b04f8df3979f8bca791a11592ac69270",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CGTLrobinhood": {
       chain: "arbitrum",
@@ -5867,7 +5873,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x29b40b3bc1ec964ebe87465f37d0d61dc3d592d7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "URGrobinhood": {
       chain: "arbitrum",
@@ -5879,13 +5885,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2a5d88e87b35b981ade99e60e93ea80e644e75cb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VERUrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa4af116e8ee9098b73536853f46b5e2e01bcb987",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CVErobinhood": {
       chain: "arbitrum",
@@ -5909,19 +5915,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc3ec675c4fd8c26e2ed55097423dc36dee087092",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EXASrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7f4cc2e84d3acba27bfa6375e8d6310dc6e2ca96",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VGITrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x973b1059b67aa51b3adaf19d828bd9386b7c15d5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KBWDrobinhood": {
       chain: "arbitrum",
@@ -5933,13 +5939,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc39d76fdf91870c9aaa3cbc0a47c0ef65dee0047",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1e7f376c8033d3c02fdcc33d5995d6d88b66b8b7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PRCTrobinhood": {
       chain: "arbitrum",
@@ -5951,7 +5957,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x71a894f86d9ee16fa56f36bfd09351e2f0719ad1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AXONrobinhood": {
       chain: "arbitrum",
@@ -6095,25 +6101,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x53c38258abb010d1e296e4d7caa7e4a706c08fda",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdd1f387e88ae98b4e979a9067e780394b5b77a2e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VDCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7144986cf7ad2210628672bc9f7fb42ae521bd0b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GENIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8291adced07430b4332cf83441d34dacc0399100",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MODrobinhood": {
       chain: "arbitrum",
@@ -6125,7 +6131,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe075e7ae6929be29820a85903216ac0f50b9cfc1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GEVOrobinhood": {
       chain: "arbitrum",
@@ -6143,7 +6149,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2ab4ae03f78cf055bb0f2765cc2f958dc36d6fe2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HUBCrobinhood": {
       chain: "arbitrum",
@@ -6155,13 +6161,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x43fd5e5e9799366002f112ec041c535318c336af",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OXSQrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc5bc2118fb6c0e82f4099bbd34a2e8450b729fcd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EWTXrobinhood": {
       chain: "arbitrum",
@@ -6173,7 +6179,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdcae7684643d4d84f757f755534ced090496a1de",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RYrobinhood": {
       chain: "arbitrum",
@@ -6203,13 +6209,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5595848aaf442d9470f0657dd28b6519423544eb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EDZrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3bcce5b59bc3a25c2de23fb62e9da162ca716ed0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DBOrobinhood": {
       chain: "arbitrum",
@@ -6221,7 +6227,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb9293c1c73f8cfe987bb4e11b2db75b8cad66370",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MTUMrobinhood": {
       chain: "arbitrum",
@@ -6233,13 +6239,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb1ddfa168a626f72e7c237c4edb7069a8f3bb022",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NBRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x92caba0cbe378023629180aa11d386e9544ed053",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PRMErobinhood": {
       chain: "arbitrum",
@@ -6251,7 +6257,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xee3cd984e97e9fa0a4398607a088aa4b95ac34f1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RVPHrobinhood": {
       chain: "arbitrum",
@@ -6275,7 +6281,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x122a189d5284a59f7ee01700cc8590475c0f2b7a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ACNrobinhood": {
       chain: "arbitrum",
@@ -6413,7 +6419,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x10ec2aef89cceea454cc566b44a6221a1c335d02",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OWLrobinhood": {
       chain: "arbitrum",
@@ -6449,19 +6455,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9007f7995c03a11880806750a74ec87a6937605d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ONTOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf906723101c48f8755a6bfa24529de9435b8ec6f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GLADrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc12ca1d60928215d989ede7d9eaa5c9cfa210a4b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CACIrobinhood": {
       chain: "arbitrum",
@@ -6473,31 +6479,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfae27d0e8084d5916666539ccb1b47bdf9d879f9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SDGRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0df0dd0f2d36188a9a316a6b935a9ad076db6a19",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3fdffc4f70e47c17a532ddd1cc16a6eed86546e4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HUNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3793dc51e4416fc0681debcae8a4c514d381b9f5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LPROrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x979397f323108b752c0d6515da84fec34a63e458",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KOPNrobinhood": {
       chain: "arbitrum",
@@ -6539,7 +6545,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb6293d25a7750343e819ef7d79fc117500175b01",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VIVSrobinhood": {
       chain: "arbitrum",
@@ -6569,13 +6575,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8f8d75194d00e9e857f5522ac8809098b11d20b4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HAFNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x585506143030fe530d4d5aa31aeae9f15f623a80",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NVDWrobinhood": {
       chain: "arbitrum",
@@ -6617,13 +6623,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc26de9476e0222b35b7e931b879d481b0f910c8b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PTCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa91bfacd09f852393aa53b48897194f68a2f36d9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MPCrobinhood": {
       chain: "arbitrum",
@@ -6641,7 +6647,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x00290e080954fc1bfcaf21da696e50b3aeb43151",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CHTRrobinhood": {
       chain: "arbitrum",
@@ -6653,7 +6659,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xddc94a36f8d764e8a24d295057faa678b24601f2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OMCrobinhood": {
       chain: "arbitrum",
@@ -6671,7 +6677,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd1f73ce6027c77072485188839ae09c71b31777a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GILDrobinhood": {
       chain: "arbitrum",
@@ -6683,7 +6689,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x92692b53d29554abd35d83741dfd022cb23c27f5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WDCrobinhood": {
       chain: "arbitrum",
@@ -6839,7 +6845,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x40365430587c358775ad06b2eddfe73104b7e5fd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SESrobinhood": {
       chain: "arbitrum",
@@ -6941,25 +6947,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7eb154c7fb3e8e4236dbcdbd153532954fc67519",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WATrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa0be8d0681173d0d65dc74a3935617489325e606",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7bdb7ffc780a71d8854a82c82b15a565647b5fb3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PPLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5d1a27309fa44d977550a79cde7d4bebddcb892d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FASTrobinhood": {
       chain: "arbitrum",
@@ -6971,7 +6977,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4abcbb499fe4b69fe7dc200e33743cebc12a7ec9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BF.Brobinhood": {
       chain: "arbitrum",
@@ -6983,19 +6989,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x32f7513185682bc48b9e9ffa962df2999a2f54bd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "Qrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xeefaafbd98241061b6add9adfdd71eb9b5f206c1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TCRTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1be1b10d8e18a9e8cc9925083831a9d9e425741c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ALDXrobinhood": {
       chain: "arbitrum",
@@ -7007,7 +7013,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbfcfeb2d65733506c573c75fed7b079413a761d8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ULYrobinhood": {
       chain: "arbitrum",
@@ -7025,7 +7031,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf17348e8330449a890707ae5e261ff7481ba06ed",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IEFrobinhood": {
       chain: "arbitrum",
@@ -7067,19 +7073,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x93df38fbd59e517750caebe236dda884f02da3b7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PFIXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd39e943c0b9e612499835aed6ebd527b5f488ed2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ACLSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x76c0f8a25ae7561ea96ab7952efccc4a7e5717d4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BBIOrobinhood": {
       chain: "arbitrum",
@@ -7097,13 +7103,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9dbfc9bc93337cba7083b23cb73afee2fbbbc24c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ATHRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x24986985f41cc5c77c5c50f8fe1b4c6b24ae6628",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MAROrobinhood": {
       chain: "arbitrum",
@@ -7127,7 +7133,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x58936696df2c2ecaaedb290fe5087998c9d521cb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VOOVrobinhood": {
       chain: "arbitrum",
@@ -7181,7 +7187,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x61b5045b0625832f5949a35eb0a9533cb05ad2f0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "URArobinhood": {
       chain: "arbitrum",
@@ -7223,13 +7229,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0c4604c9abbde7da51249060158a142fad49c797",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NWLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x60b479171aa66714ce29cb11ebf0ff26bcfe200f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HTGCrobinhood": {
       chain: "arbitrum",
@@ -7241,7 +7247,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6c77fa7420ce224a2eef7e7ddd27794a9fead7df",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RETLrobinhood": {
       chain: "arbitrum",
@@ -7271,7 +7277,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9c0a31c9a4bc3dad739938131ec3ba135ce9868b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KEYSrobinhood": {
       chain: "arbitrum",
@@ -7301,7 +7307,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x07039a82417bb8378883794fbea422e5721eb199",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PCARrobinhood": {
       chain: "arbitrum",
@@ -7469,7 +7475,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd815df7d35bd64f7edc884c5d91605e116a5d192",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SOXXrobinhood": {
       chain: "arbitrum",
@@ -7535,13 +7541,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x27d2a5e76c290783041c21b488a72ba9dad38f57",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JETSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x46a9f1c8306dc52e87c492560b952f322ebbc37d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RILYrobinhood": {
       chain: "arbitrum",
@@ -7553,31 +7559,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb79d6a659ea5694fd0782e3d1084fff839f898cd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NOVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8c174bbb4a60b030aa64c1737f572f1230f63d1c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BDRYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x830823d7717d619710b6e263b4a3ef560b271bb6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OPKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5cb2da875fd0c76fe27ba9fad6c9b537bc638884",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EBSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcb92575e240f0bba8596c087217219c0b20423d1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XLIrobinhood": {
       chain: "arbitrum",
@@ -7607,7 +7613,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3779072e7c8385349f05aac7bf6ce44b21a92cc4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IEFArobinhood": {
       chain: "arbitrum",
@@ -7619,7 +7625,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1dd64d06395deafb56d058a6cb0cb8e1aa5183a3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NRDSrobinhood": {
       chain: "arbitrum",
@@ -7637,55 +7643,55 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9baf80b0a47d718f3d2f65dcca191c33291c8f8f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FLBLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdb4f59dfb9bb27dd1e37d45aee41b24a5619f737",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CASYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x25c6c06e335bb4a5b1d8dc1c16949091bd6aa215",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CNKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf499437b2092d2479b437f4762fb5261d0b55d65",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LPSNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xad99d06ac7e868b5bae70910762b637336967f51",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SUrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3021839492eb36aa47a875bc4e0e8bcbf6960272",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UTZrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6e9509658ec740d193d95bc66154b54b2f961481",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CERTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0a71c882242cdb4db5d81a6e0bedde755bdd8733",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RCIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x275804c7b71de3a3d99734c2f6bc05e52767ab0a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BLZErobinhood": {
       chain: "arbitrum",
@@ -7709,19 +7715,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1efb1e939d545e5a6a5e71ef73211022fe45c4ab",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ATKRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x36d341fb40abe4cbdcc93e893e056c43969f893b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSMYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3c6a656358ddb149ab6c5213aca86c7f33c9c291",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PBIrobinhood": {
       chain: "arbitrum",
@@ -7847,7 +7853,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x39cb8517bb11fbb5930783cd6e93177f4222b8d6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HPQrobinhood": {
       chain: "arbitrum",
@@ -7871,13 +7877,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbde791c47525f1457707288af49582623111f474",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PAYCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf4e0a90762e767e2d06b29dc61dbb0f1cce2ccf1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VLOrobinhood": {
       chain: "arbitrum",
@@ -7889,13 +7895,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa76f1c3124236fc7a1e7dbd86cd10ab4ffd4569d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ROProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x85e78fa99200e5c7601995658171c703878256bd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SWKSrobinhood": {
       chain: "arbitrum",
@@ -7907,7 +7913,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x45c80638e0d24c5d9e77cb90a1679d3ee4df8e24",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ITrobinhood": {
       chain: "arbitrum",
@@ -7925,19 +7931,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x089d4b7d0cb3fd53e0b35bd0ae65fd4d5a42903e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FFIVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf45592cd8f5b8dad268c4b1024ad8c0be5b27ae5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MARrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb295430dd1f780312f5a4fae9edad6e5524f2acd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMTMrobinhood": {
       chain: "arbitrum",
@@ -7949,19 +7955,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x45b3ed9b74043d2642168ef063654b7efe04d51a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PPGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd6fcb7fd94089ce31040b355ddf4b4bfbd88c904",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ZBHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3079b239d60377fdbd6d5e4ac848a43a784c8261",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LWrobinhood": {
       chain: "arbitrum",
@@ -7991,7 +7997,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd281ec3a4f46aedb96a8e6887042a56c03d2d01e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FRGTrobinhood": {
       chain: "arbitrum",
@@ -8009,25 +8015,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcfe518b690a80b1af02a4d38fae0b17ed3393a3b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BNGOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x14079b74457905924d5598874db62e1433cdb5b0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PROProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x51f143ccef23d6ec2c4e11234bd91cd42fd48ee6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc8e9d83c0c05b77bedfb29c6c1a732cfcf9bd74d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ABCLrobinhood": {
       chain: "arbitrum",
@@ -8045,7 +8051,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x799523fe7d9687e5152e61829c0e428d488245ef",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NOGrobinhood": {
       chain: "arbitrum",
@@ -8057,13 +8063,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8ba707abceda5a64d485a6f0bcdb0d4841ee4688",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MVRLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6c70bd7e44f4d4d2f44460dde0744037c05b2f92",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BFLYrobinhood": {
       chain: "arbitrum",
@@ -8075,7 +8081,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xba167bac3f5a5ba88bc6fe733c435d45541abab7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AISProbinhood": {
       chain: "arbitrum",
@@ -8087,13 +8093,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9ff3913b11b1551c6ccefdee29680f936bc55249",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MXLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8cb212b9358e6c4b23a422c791d205dd16f092f4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PPLTrobinhood": {
       chain: "arbitrum",
@@ -8105,7 +8111,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x284084599a4ccaa61d893fec4fa649142d02fe3e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CSHIrobinhood": {
       chain: "arbitrum",
@@ -8117,7 +8123,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x34fc5a4612d3e5df005457f810e0b6773b523daf",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BHATrobinhood": {
       chain: "arbitrum",
@@ -8135,7 +8141,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x61402990eb543efe071fedb4ae96c5b3c1ed8caf",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "QNTMrobinhood": {
       chain: "arbitrum",
@@ -8153,13 +8159,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe3da4d1fd121f2a3b7dd64fbc8890f40d7c8edc2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ATECrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2c4432e4143cc7825fa81d63f7a65de3db182594",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XARrobinhood": {
       chain: "arbitrum",
@@ -8171,7 +8177,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x65c23fe13be158b8680bc0722d9acec419628ed6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VLYrobinhood": {
       chain: "arbitrum",
@@ -8255,7 +8261,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x433bd9500f4527dd9ee89e52ff6098e86b1d0310",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KIDZrobinhood": {
       chain: "arbitrum",
@@ -8273,13 +8279,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x199896f75b2734f662910b4c7e2f1e817e839450",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CMFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdad51a8c031370812f81dc6da3c059f36c17e87c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SABRrobinhood": {
       chain: "arbitrum",
@@ -8297,25 +8303,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x02f1ccfd5f63ca2252c74648af47d4dd6558b15d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPYTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd57d58b0457752aff4e4c68a0d4d76ef4068d934",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TBHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xce77bf6646ffae70a5c91f6ae1dfa995ca277aa6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AGENrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb7aec80bc3aff46c3335555ee107b7bacda467af",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CGrobinhood": {
       chain: "arbitrum",
@@ -8345,7 +8351,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4a48bbaf3f7a827e0b19312bac12d91e36c9e494",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RIGrobinhood": {
       chain: "arbitrum",
@@ -8363,7 +8369,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6aa5eab581ab44047f934b5d34638b840b2deb1b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PSTVrobinhood": {
       chain: "arbitrum",
@@ -8399,7 +8405,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe2c2bfb3d1c97dcd8f21cdd57b3f724202066161",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ZMrobinhood": {
       chain: "arbitrum",
@@ -8411,25 +8417,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3d12b6bd353a670036ed25e15b80bcb9a9479425",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SLXNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd64cea148e2de945209a4b8d2cea6b1687c75c36",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KODKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa4b7506afa6d578e86ea6cedc9ea4ac151dd5b86",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AKBArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc1491f0f4e3937d6248fc451b3d4e3e7c94e0131",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "POWLrobinhood": {
       chain: "arbitrum",
@@ -8465,13 +8471,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd8d41fdf2ff212f1b556c8ccec5206dfb29e39c8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SAILrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x340091bf17fe9d0472b2bd1214e4776bafbab3de",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CTMrobinhood": {
       chain: "arbitrum",
@@ -8489,7 +8495,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x47f92a2177135a2fea683becda66c10550e6c6b1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EDHLrobinhood": {
       chain: "arbitrum",
@@ -8501,7 +8507,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3824e57b9325266cb9cc0597e4fd7bce064e2d24",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VSTMrobinhood": {
       chain: "arbitrum",
@@ -8513,7 +8519,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x08668dba12036ed5057267b2c0286635ff88369a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BKKTrobinhood": {
       chain: "arbitrum",
@@ -8531,7 +8537,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x85f20073c6c2cf3e02ce6986e4fcaad56e4ffff8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GPROrobinhood": {
       chain: "arbitrum",
@@ -8543,7 +8549,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8c492f1ca2b605c45c9ea78f6b6ff0066d8708bf",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FEPIrobinhood": {
       chain: "arbitrum",
@@ -8591,19 +8597,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4dc22cc63f90bca82f28fa749244442f74ddbdec",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x41696341138dce6c3f1fc78be17d897da7a51d7e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GRMNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc6befa3660d912cc57992720cc17dfb1ce61db9a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSNrobinhood": {
       chain: "arbitrum",
@@ -8627,19 +8633,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x941545908268beb2a0a3523bce71002b640cd0b8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EOGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb7a353fbba54e39967f1a0a0398f5c71838bc68d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SHWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4a10174c01fa619f54a01dc137e4cabbf38023ad",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRWDrobinhood": {
       chain: "arbitrum",
@@ -8747,13 +8753,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3df24bccda06b3011b37f8f53f5a382064d65767",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PAYOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0ca34cebdbe44962a177b60a7251d3c6c1af0ad7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ENBrobinhood": {
       chain: "arbitrum",
@@ -8765,7 +8771,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4aaf2bb0a83d3e7515046426c591aae549d63438",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRSHrobinhood": {
       chain: "arbitrum",
@@ -8795,7 +8801,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf4b42ebae9e490ae478dca0f2f2a22e7b2766d5a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AAPXrobinhood": {
       chain: "arbitrum",
@@ -8831,7 +8837,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcd96f55055590491e511b8cf8abfc9610db0637a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RIOXrobinhood": {
       chain: "arbitrum",
@@ -8849,7 +8855,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x516ba853fa716d09878e62f6c1191b811ad6cae2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BURUrobinhood": {
       chain: "arbitrum",
@@ -8873,7 +8879,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdf669ed5f01b8023b3a8fa95e2ece70cd107ea7a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PMAXrobinhood": {
       chain: "arbitrum",
@@ -8909,13 +8915,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x819d0ff2a0cf5d8cba1c1c2ddfe9f886f6197b84",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GPCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x66182039c0ee2c26e14dfb262d7226046442a74c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WRBrobinhood": {
       chain: "arbitrum",
@@ -8939,13 +8945,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1380239d5ee24e8bd68f4576566dd91724a1c2df",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PULSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xabe6feff033e24a81d534fb0cca174525380c560",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ZENArobinhood": {
       chain: "arbitrum",
@@ -8957,7 +8963,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1938d8785af6c256b1c3ff0e6e198e955ceb3e3b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "COHRrobinhood": {
       chain: "arbitrum",
@@ -8993,7 +8999,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xccb08304bfd57be286ba6b61332652723b14dcca",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPCErobinhood": {
       chain: "arbitrum",
@@ -9011,7 +9017,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0740b890183232504a937cea95f5e731a5cc31a9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TALKrobinhood": {
       chain: "arbitrum",
@@ -9023,7 +9029,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x42e9fbb32504f3285990307858e16f235fcd1906",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CHAUrobinhood": {
       chain: "arbitrum",
@@ -9035,13 +9041,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7c28d15bb8f39cdc25678371f88c19c2853401f4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HRZNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x293da75b9ad9778d30df0572e2daa82ce814e3e8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CPNGrobinhood": {
       chain: "arbitrum",
@@ -9059,7 +9065,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x160a05b8f70d24691f2cb035a55a0bcaca21d117",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SMXrobinhood": {
       chain: "arbitrum",
@@ -9071,7 +9077,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4d090df85ac72a6ce003732c190876a0411833dd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMPXrobinhood": {
       chain: "arbitrum",
@@ -9083,13 +9089,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf7b83bf00b943f5aa0fa8b22a82e22ab2f63164e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WSMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa80ba6706347d49a6b89d33cce24e91a9920d712",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XOProbinhood": {
       chain: "arbitrum",
@@ -9101,7 +9107,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4c5206bc6bd104d827d607a6068997544b219002",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PSTGrobinhood": {
       chain: "arbitrum",
@@ -9113,7 +9119,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6f796de69b10468d426593d2b69f29a6275e3fac",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ASPNrobinhood": {
       chain: "arbitrum",
@@ -9125,7 +9131,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x079b05d478e77ee5f666fbc74799451cd46ac5f4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IMNMrobinhood": {
       chain: "arbitrum",
@@ -9143,7 +9149,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x425d0dbdaa0ada8674b267112791fc523022305c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LCrobinhood": {
       chain: "arbitrum",
@@ -9161,7 +9167,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x92c47d9165f1c3cfd9e6cc082fe87dbc04c42db0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLSrobinhood": {
       chain: "arbitrum",
@@ -9227,7 +9233,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x968f4f5d93e3c0a1077a76348bf3207e9537dc04",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPYDrobinhood": {
       chain: "arbitrum",
@@ -9275,7 +9281,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x96c573504491a6e131f257be3f9c2ae6820d5f07",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SMCLrobinhood": {
       chain: "arbitrum",
@@ -9329,25 +9335,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x52824c659c537ecd53870ec4679dab65ddf36d1e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VLTOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x48ddef40d13df0cefedc4a8f2d6b687dbd1c5c55",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd30ac13a0302bfaeb2c5599eb31244e6cb569ae5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FITBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5aa9e5f9f817797738ba2df7800b71af796e97cc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JBLrobinhood": {
       chain: "arbitrum",
@@ -9413,7 +9419,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x69259c145d4878b61912ae159e41956b09e719a0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ALLrobinhood": {
       chain: "arbitrum",
@@ -9443,13 +9449,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x423198bff49f8f58ec8ced6ec2c37f39ed294080",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SJMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x954cf25c8fca3430a4ea81eaa6c6670914222648",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ARCCrobinhood": {
       chain: "arbitrum",
@@ -9563,7 +9569,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4204946a8b36588bde90ad2bd40e513abc811819",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BITFrobinhood": {
       chain: "arbitrum",
@@ -9575,7 +9581,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb74e55f353537e11346ef11bae1e3b09fe4826a5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VONErobinhood": {
       chain: "arbitrum",
@@ -9587,7 +9593,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x515781b6bff8b113d0200f342d19f7e7f7890b5b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EWYrobinhood": {
       chain: "arbitrum",
@@ -9599,19 +9605,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3aa78725a2a9c9136f695af3b401bc3574122e28",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MQrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xccc96b1119639e314f3faed639a3a0d2027465d7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KINSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9b3582e1e299fc23fa7666103aa4dbd2ab1342fe",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NRGUrobinhood": {
       chain: "arbitrum",
@@ -9635,7 +9641,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x497971978c4d975e019b5f27f0f084a5704dc0ae",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TXGrobinhood": {
       chain: "arbitrum",
@@ -9653,7 +9659,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x81b84766fffdd3ed270e635f0d77088079223fcc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LITErobinhood": {
       chain: "arbitrum",
@@ -9665,7 +9671,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd48d3494e63b50a458bb6fd748803cac7134a2c4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ILLRrobinhood": {
       chain: "arbitrum",
@@ -9683,7 +9689,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdec2cd61d32f8da1b08357e9055b363a62a81d17",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GOSSrobinhood": {
       chain: "arbitrum",
@@ -9695,7 +9701,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x171db3ae2b62a0edc1eba1cc984c149b75b85ece",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GERNrobinhood": {
       chain: "arbitrum",
@@ -9707,19 +9713,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0a305bc94f7f1d9151332ff8b1c2c58b85f3fb6b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ABVCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9548ab0862ce1ee754d0f1e1b8ee4997ee4d431c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FNDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd340b498a89edfc6042f3815833a8ea158447ef5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UWMrobinhood": {
       chain: "arbitrum",
@@ -9731,31 +9737,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7df7d743a9d09f64ff342163b94d314c52077315",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MRVIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x75ab1ba9f7ce28be4e3ad73f7b1c04cbae4e192f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PDEXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x560fccec54c56c0069b120002d33230f969813af",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SCMrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x68c611038e2f2691f39eaba96fbcbb222bf8dba4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SDRLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4d5a97a7980f8e028eb54a733d9a88fdfff115f3",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MAXNrobinhood": {
       chain: "arbitrum",
@@ -9767,13 +9773,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbc933c84f3e2ebf13a257bbbc0ccd5dfc3d36506",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "009CVR044robinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8c592fa1488c0f131efb6b6205d844cc182b698d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MSTUrobinhood": {
       chain: "arbitrum",
@@ -9899,13 +9905,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1b57f6b0a256b28a574de3cde9284a771ec7f335",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WLDSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x14df5075f2274c3226aa9a63840cb8481d2288f7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VEEVrobinhood": {
       chain: "arbitrum",
@@ -9923,7 +9929,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x901803dac5ee066c5f4ea934d991e1fcd3adcab7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SILrobinhood": {
       chain: "arbitrum",
@@ -9959,13 +9965,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd4fe33c78e434280b6f65f525ddc5f9064d29661",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STIProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x958d126e26b3a4065e29acfe8d02ec2ddb4ee636",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AGXrobinhood": {
       chain: "arbitrum",
@@ -9983,7 +9989,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xde26ea957071aed6309cfef0630930fde0b69bfd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GRDXrobinhood": {
       chain: "arbitrum",
@@ -9995,19 +10001,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa95cd524942dced20aea097066894b8d9f43f252",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SWBIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8c98a21f7cc17f5af42a2e81d11ea20f487b58b6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SCVLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x145ff049b2bff539591938bc3a976c4b9eddf1f9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DIVrobinhood": {
       chain: "arbitrum",
@@ -10019,7 +10025,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe53a43b77a030b214c37a0a7ea6379e8efe0b7aa",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMZProbinhood": {
       chain: "arbitrum",
@@ -10031,55 +10037,55 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x235c85ddb00697f2db0da7095e8e68df673fc7ad",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CEPOrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5447d873274e5e85708bc26613e5d548a40abd1e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EBCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1f2792f71e10a8b1c099dd02095c0e138cdf5729",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GMMFrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd5c93379ab385b4101f966988b46dcad6b4f9215",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DINrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1277e544788b0f085f81ded6c5da638c7e263bb7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CCCCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd18d3bff3458df22393e3db520ffe1824eb1109a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VTLErobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xaa4350da45c1dc8cded35a8f89be67c8c45ac07c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LDIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4d658e82908eb2fb466e1fdd734d1b14fb5d5f32",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TRUGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd86504d2b374321e14f4ba7f3bb241ce63b22283",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ABNBrobinhood": {
       chain: "arbitrum",
@@ -10175,7 +10181,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf27a8209a212b6d409cc97230a662fde8296319e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SOrobinhood": {
       chain: "arbitrum",
@@ -10187,7 +10193,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xafc2c1d8fb5a08e2e689f52a68e65d9062296cd5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TJXrobinhood": {
       chain: "arbitrum",
@@ -10295,7 +10301,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe5b01629d52601281cf1c0f531961a8bf9ad9797",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ESPRrobinhood": {
       chain: "arbitrum",
@@ -10319,7 +10325,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbae2a9c02b8ffa932c141938467e67788168183e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ARRYrobinhood": {
       chain: "arbitrum",
@@ -10349,13 +10355,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6d593614126813cbee87cd1df112ad6ff5e1f706",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPLBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8a7da93adb3184bf9fc8ee0ef5a285a1f790d902",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PMMFrobinhood": {
       chain: "arbitrum",
@@ -10397,7 +10403,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd3b0568cdd27dff55a902a1f99f6ab67c8af5086",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RCATrobinhood": {
       chain: "arbitrum",
@@ -10415,7 +10421,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd1aa75fc0d4c9e5c7395456f06723e19e43a79a4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "USARrobinhood": {
       chain: "arbitrum",
@@ -10433,13 +10439,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0cd4d2a5f4e840d8a58f81b575e57a8ec38fc679",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "APLSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6291f267bd707d15578af2dcb37fb3184c3aeb4a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRSRrobinhood": {
       chain: "arbitrum",
@@ -10457,7 +10463,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6b82221e1eae631fb170955f371804d5160562d5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MSFLrobinhood": {
       chain: "arbitrum",
@@ -10481,7 +10487,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x08fb0a17e34090af05c93b8a367a13ecab312b52",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CHGGrobinhood": {
       chain: "arbitrum",
@@ -10493,13 +10499,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd222492650d88b2d0931fafa253ee95aedb371e8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JNKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x954a5bd48e69cb6d8e66d860faeb697201a95a62",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "KORUrobinhood": {
       chain: "arbitrum",
@@ -10529,19 +10535,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x38e47979dc187a17e5e6a3c8c01df4041337bca9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TDUProbinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe156db85598bf5f7d57098ba8db93dd4f72cc077",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VISNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb72104b43c5cf3868ee29a624792d878211d3993",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STIrobinhood": {
       chain: "arbitrum",
@@ -10559,7 +10565,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdd9cb23b3246f1ce7bcb0bbca3ef10a159b988da",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PSQHrobinhood": {
       chain: "arbitrum",
@@ -10595,7 +10601,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x33531d975fd7c5d45e052a6758fde58487c20fde",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VTVrobinhood": {
       chain: "arbitrum",
@@ -10637,19 +10643,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb26341aa7fb2c33d5eeecedf74a674e5f65cb2a9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AKROrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x31ce19f3f122579559561e5528321c120b43b1d2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SAIArobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7a68216780898b5d2d1951fd3c9020b0ee801cc8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMCrobinhood": {
       chain: "arbitrum",
@@ -10691,13 +10697,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xefd3bc1e24f6f497500daac28bcf2e8340b5dd4e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ODDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8a6115b8626f0e8acfaf3b405d94969dceac103f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HRTGrobinhood": {
       chain: "arbitrum",
@@ -10709,13 +10715,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9c1ce1ba8b56206f616cfb2451f5e4bdbcd80dfc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LEGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfa1a7c403404a98f177225fdfb630e9b57968d8a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "JTAIrobinhood": {
       chain: "arbitrum",
@@ -10757,7 +10763,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbca96b31b92737ba0790885e5d9653f960f39e23",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PFFArobinhood": {
       chain: "arbitrum",
@@ -10769,13 +10775,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x802f2ac0aa8486c84d266ce51ea3a178483109c2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EVGNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x680989ac76b80c202dffe79b34d49a8d219fc2a6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "INVZrobinhood": {
       chain: "arbitrum",
@@ -10787,7 +10793,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8b589c1b4a2cd00d20f4701eb5d9b470273aa934",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "VUZIrobinhood": {
       chain: "arbitrum",
@@ -10799,13 +10805,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbdc54eba045669341c6660772989a594851c8d13",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IGOVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x04364a8a32bcf84911abdc171c6da2093c1c80d6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IYRIrobinhood": {
       chain: "arbitrum",
@@ -10817,7 +10823,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe5fdb613b8943f3e41efcaef6741e04d9636931c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ESGVrobinhood": {
       chain: "arbitrum",
@@ -10829,7 +10835,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbfd3593f2f271f1e8b4d34cd054ed47702351331",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SONMrobinhood": {
       chain: "arbitrum",
@@ -10841,19 +10847,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfd32fd204d860dce23da9594374c3358892161a5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "YHCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x594d720dc0fb053e4185ef7d156885e8063343b9",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PHOErobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x28e317b71e2e56f55651a5e706d483cd18b34e47",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PRPHrobinhood": {
       chain: "arbitrum",
@@ -10865,25 +10871,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb5f1636e0446a94a066d2987f4a4bfd9bdcca84c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LSCCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf0b8e7adb944b9c5dcc20c30dde7dcd1acc43417",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XHBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdcf246a56456322459d99347aa17b12c7b444859",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EXODrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3676c79d64043fe28dcc2edadd46f1a88e826d7f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SUUNrobinhood": {
       chain: "arbitrum",
@@ -10895,7 +10901,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x663e5da76e7a566aceb0c164ae3354fec0149d24",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLZrobinhood": {
       chain: "arbitrum",
@@ -11063,7 +11069,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x52f4474715b6cc0231d5aed0bd860c859ea830fd",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TAProbinhood": {
       chain: "arbitrum",
@@ -11075,13 +11081,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x687af1dec58d3cbcb502ab22a7acce29249f002b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WSTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd7d44bb5c6b449289d4e44419bc584b43b734f8c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NWSrobinhood": {
       chain: "arbitrum",
@@ -11117,7 +11123,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7c36b58f7fd6115f234d99b233edf3945abebfb4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ACrobinhood": {
       chain: "arbitrum",
@@ -11129,7 +11135,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x54aec995e79bec218f2909fb39cdcdd94984a3cf",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OCGNrobinhood": {
       chain: "arbitrum",
@@ -11141,7 +11147,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xeaaa020542a348dee254ffbd0894059315f3507b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FIGRrobinhood": {
       chain: "arbitrum",
@@ -11177,7 +11183,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x95743ea20d65ff98142c33b88a13c349bddcec0c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BKSYrobinhood": {
       chain: "arbitrum",
@@ -11189,7 +11195,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x17e5b160a82fa27bbc824e2dd38c783815e73df0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EZPWrobinhood": {
       chain: "arbitrum",
@@ -11207,13 +11213,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x688093a8a3161cd21bd5e5a912bda0044280de0c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SENSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3bb9badaf91a25a2b6a471a7604abd6433c68cf7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DFENrobinhood": {
       chain: "arbitrum",
@@ -11261,7 +11267,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbae62a43ed3607e453992024a7d5b0a924df99a4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IWMYrobinhood": {
       chain: "arbitrum",
@@ -11285,19 +11291,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x192cd95d2215762ca0fe6b9f08179eb0e9db4813",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TBLLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbcebf24ca9e11b94c84b1d045b3977740a993519",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MRNYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc3666e238b9b7fbbd814e4be228cb27271f6cf07",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ORLArobinhood": {
       chain: "arbitrum",
@@ -11315,7 +11321,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x95fdd3104dc2d9db940ffa0f4207b3dd4d7de24a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WTIrobinhood": {
       chain: "arbitrum",
@@ -11327,7 +11333,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x3dbd374bf6fd9c31431639a2d235e3eb3aed2028",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LOWrobinhood": {
       chain: "arbitrum",
@@ -11345,7 +11351,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5b8df0ba67fe23d4ff9657eb7dc0c9057f834d86",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EBAYrobinhood": {
       chain: "arbitrum",
@@ -11465,7 +11471,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x368ed60e339a33ae6a41438431b1fe9180d70627",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SXTCrobinhood": {
       chain: "arbitrum",
@@ -11525,13 +11531,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9a0bcd574766e7d8af801122625cd1ab772f9212",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GSBDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xdb82f7e7c727326a675f95be378c93c3a22243e4",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ITBrobinhood": {
       chain: "arbitrum",
@@ -11567,19 +11573,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xbeccc3404be06d2d7cfcbe48cdb2dd453ab1d2d8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GOOSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7c8ee99aac74cbf691c87f8b6b90f16058fb6508",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "THCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x396ff10dd2c0af5233e5e88a62a1f9f5413ea9cb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "REMXrobinhood": {
       chain: "arbitrum",
@@ -11591,19 +11597,19 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x676c7526524c681e3be250cbbc99ea99bf023419",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "USMVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4461274d9242a99c4c5466ca5a821978fc82cdd1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FSKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd0c6b869e0a9e2f6ca5d90a03407917e18904641",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GOVZrobinhood": {
       chain: "arbitrum",
@@ -11621,13 +11627,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe61b9ee4cbaff430219621c4ca948a775a0e2b9d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IDRrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe14b4b1028c0c0812822c559fcbc3ea8bb8f3d9d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "XTIArobinhood": {
       chain: "arbitrum",
@@ -11639,13 +11645,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2126ed2e7a4126083f0e9ce32cd8be72697cb7f5",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NUVLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8f1aac5d59b94bd07b5182fb057ca322479374cf",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SPIRrobinhood": {
       chain: "arbitrum",
@@ -11663,13 +11669,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x902293786a08b1691ff2c485adfe0cc8b8c3c11c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CRSrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2318c431a6d4fceceadd95bd4101aa0593f9b2b2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BIZDrobinhood": {
       chain: "arbitrum",
@@ -11687,13 +11693,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x7facbbb4cd207c84db003f0fe19d68b70ee1d698",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "OCSLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x529849478c205b9b8a149b9b84a9721497d9d128",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EUFNrobinhood": {
       chain: "arbitrum",
@@ -11705,7 +11711,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x262355a0eb92655b82861aec3511836d4ce8c61a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BLNDrobinhood": {
       chain: "arbitrum",
@@ -11717,7 +11723,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1d8166d4e58d4a9bb8341783de17576d8445f2b6",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "COINrobinhood": {
       chain: "arbitrum",
@@ -11795,7 +11801,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9bb213ef7e4db94495390ef255853f01a9b33683",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WPMrobinhood": {
       chain: "arbitrum",
@@ -11807,7 +11813,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb005e124d53b5f085dcc3c56385bcbc7677c1869",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BBrobinhood": {
       chain: "arbitrum",
@@ -11861,7 +11867,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfee3391d1b5112db2100b6fbbd25ada2a8c17cf0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLTrobinhood": {
       chain: "arbitrum",
@@ -11891,7 +11897,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5fb2b363d47d7fdf44d319ac9be0dcf8b3be3522",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SCHWrobinhood": {
       chain: "arbitrum",
@@ -11903,13 +11909,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe4e3adfcb48b67bd41ad1474eadbc791a534b2a8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GDDYrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd0f99acfcc5e1304cef5d827a55baec0c819e4bc",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EDrobinhood": {
       chain: "arbitrum",
@@ -11933,7 +11939,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x07de39c80d2f76be18e6ed00ff482fcce7ef4bad",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "PSKYrobinhood": {
       chain: "arbitrum",
@@ -12119,13 +12125,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfcbcd406f41e2df7a897a4e8d7be07f505fc7587",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CLIKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xa0b74f2a13444e977789fa9cc5f8c132ec72a50f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NMAXrobinhood": {
       chain: "arbitrum",
@@ -12197,13 +12203,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x77c19015d59371f66dd791d45f3f6b0f50bf1fe8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BAHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe202085061d97a0f0406ecbced11e8efcfe6bc46",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GSMrobinhood": {
       chain: "arbitrum",
@@ -12215,13 +12221,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf3a072a09bc0d117c9a79ae21af459cee6930c6a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "LGCBrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x9b541d2edeadc7f9fdd564766879e93fbfbcea7d",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SCHArobinhood": {
       chain: "arbitrum",
@@ -12233,7 +12239,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2975581169c1610c59a2a52c6192ee75edd6a462",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EWWrobinhood": {
       chain: "arbitrum",
@@ -12245,25 +12251,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1ef84fb23c3fafd34a100648db4ae97218d5baab",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DCTHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xd497a88e49169dac490e9b45663751300ec30892",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UDNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x20721f64897ba9aae16042768ca5e796cc8aa80f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NOTVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x05b83bdf83830200f7f238e0941f43b8abadaf05",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GMEUrobinhood": {
       chain: "arbitrum",
@@ -12311,13 +12317,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8a5c30ca8155bff1f81d862a600606b90e468d31",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NUKKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8042d8e827e198b4c4842c0e40df5847bed0dd29",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TTANrobinhood": {
       chain: "arbitrum",
@@ -12329,7 +12335,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1ebd2003899f719fc468ecb8a26c6242fffcb338",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CEFSrobinhood": {
       chain: "arbitrum",
@@ -12341,13 +12347,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5ab5c6ebfbdcfcfe5302b3b6d04024a7ce48f296",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BWXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6e2fbc92d97aee6c70efd692bc40a6bd54804cc7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "APLYrobinhood": {
       chain: "arbitrum",
@@ -12359,7 +12365,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x66edbb7100c3d712c365293c46c990468d0430f7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SAMrobinhood": {
       chain: "arbitrum",
@@ -12377,7 +12383,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1b94ae0023e72711d5b2372d8f34aa89446eaf8a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLArobinhood": {
       chain: "arbitrum",
@@ -12401,13 +12407,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x87d54d79f3c25973963f77b599b3e7295530712f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ITWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x54f0aecbbb4d6765d8d3cfc11e1f130ae95a18e1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FISVrobinhood": {
       chain: "arbitrum",
@@ -12419,7 +12425,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe3eeb20b0b3112d56f130f3314f38ea8020d4a3b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BDXrobinhood": {
       chain: "arbitrum",
@@ -12437,7 +12443,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf890d23256546fffac3b723ca098b49305fa4d35",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CHRWrobinhood": {
       chain: "arbitrum",
@@ -12455,7 +12461,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x14f12ec514f6bc876ddeffe5069ec446e4b209ac",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ARBBrobinhood": {
       chain: "arbitrum",
@@ -12467,13 +12473,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4c03adf56336520f5d06af791582e6a73d7957f8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TSLGrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4df12acdedf14a6d76c64fb23d218d5bc1f49d38",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SHFSrobinhood": {
       chain: "arbitrum",
@@ -12497,7 +12503,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1eb0c2fe8ae6c85c3b02b75387430b6a456289f2",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UArobinhood": {
       chain: "arbitrum",
@@ -12515,7 +12521,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2c0f8857d9494a8692accd9b5d2e3ec5c7e19898",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HLALrobinhood": {
       chain: "arbitrum",
@@ -12539,13 +12545,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x08b37846308d53a831697d783ef3630b028ba9a1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EDVrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x2a38c7fc13643e3c995c05e6d96a45489ae041ab",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "STEMrobinhood": {
       chain: "arbitrum",
@@ -12563,13 +12569,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5f13b43410c6021585f67e8c20a8084f95c91c99",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BGLCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8b0504db6ab090be4fba05fb53680b79d5b6a17b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FLGrobinhood": {
       chain: "arbitrum",
@@ -12587,7 +12593,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x714fc91d0df4597bc035808b0a84228213662845",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TNMGrobinhood": {
       chain: "arbitrum",
@@ -12599,7 +12605,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe9a4ada96f8d0ef36c5a51a0198f75ee9d7dcd5f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "POETrobinhood": {
       chain: "arbitrum",
@@ -12623,13 +12629,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x087bbfe626a7613496af5563da3d058c7217fcc7",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CONIrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x24e1a8c2920b5e8a1fd711cf5b070a3c33cbae6f",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CIBRrobinhood": {
       chain: "arbitrum",
@@ -12653,25 +12659,25 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x757080fabc26a5f5a32a27c526b73c5eda465d7e",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "EWrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5a7e5b07cee4ed9a9c13384b40b86b98d9e99231",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CORrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xb7310e2b8e2786ea8a5ab585bfdd7a80dd090ac8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "MKTXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x561820fa5fbf055cf4db3045f4290be08c298154",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ESrobinhood": {
       chain: "arbitrum",
@@ -12725,7 +12731,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x24b8270289dd876f3550cf90e4f89b7639b8e7f0",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BBAIrobinhood": {
       chain: "arbitrum",
@@ -12755,7 +12761,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4f6148014d3223af7dbd460a54848fa3a0c818fe",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CIFRrobinhood": {
       chain: "arbitrum",
@@ -12767,13 +12773,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5854485ccaa793c9dd84be0dc7f68ea286c75a67",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AGMHrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xfd13d7d7f8d0524375b8ad6a5de94dfbd702e1b8",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "FEEDrobinhood": {
       chain: "arbitrum",
@@ -12797,7 +12803,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x41ef6376eb9224f37a2d942e48411851b3f55365",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HProbinhood": {
       chain: "arbitrum",
@@ -12821,7 +12827,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x74e74d7f34bb023329c8b5e766ee1fe48693a306",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "WEAVrobinhood": {
       chain: "arbitrum",
@@ -12833,7 +12839,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe1b6eb0da635e4047e8c09f954c4d1cc84bb5d7c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AAPBrobinhood": {
       chain: "arbitrum",
@@ -12845,7 +12851,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x6cc1850cab2cfe14065594d1457b1d20a78c6b9c",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IWMIrobinhood": {
       chain: "arbitrum",
@@ -12875,13 +12881,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x74fc520eb1aab5d14c40a8673aeafab6cb5148d1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AMSCrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xceb3f948a32666cb458b74fd21c7ecfb80823f7b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "UFGrobinhood": {
       chain: "arbitrum",
@@ -12899,7 +12905,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x08960a13122dea23748a6943c31889a68237e058",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "SLDBrobinhood": {
       chain: "arbitrum",
@@ -12911,7 +12917,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xf4874df479a1d605c6e89a3785420b1a11c0fc36",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "NEOVrobinhood": {
       chain: "arbitrum",
@@ -12935,13 +12941,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8f0eec8e16d2a07ddbf81c62b8081ff11dd1c041",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "CYTKrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xe11a4f3671b3ff8be6a230cbf0fc78fd1d860833",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "BTALrobinhood": {
       chain: "arbitrum",
@@ -12953,31 +12959,31 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x4024a38255d7dfbc8390203f16369dc5119a4850",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "HYLNrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcd2f195de6da7a1df2138786ef5fc2a47614a738",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "INDLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x8ac2f3b86e6a74096c23730877808c15f1219e67",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "IHRTrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xcc1318f270ee4ebdbd54468731816d20a1a2879a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DXDrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x61e549bfe16f6724b73e631f148f604b8eda7404",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "TUArobinhood": {
       chain: "arbitrum",
@@ -12989,13 +12995,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x1750618732874adf692ff74cf723b583b43c063b",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "RFIXrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0xc963fe5c1ae5ba222f46b1e2d1a28c584e173917",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "ALNYrobinhood": {
       chain: "arbitrum",
@@ -13007,13 +13013,13 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x5c458578b2a608d15fe6729c7485bb2f71cdb7ce",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AVXLrobinhood": {
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x937e637b5b47e698c3ae85a9fbcf14c8e1f3d3eb",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "AArobinhood": {
       chain: "arbitrum",
@@ -13043,7 +13049,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x85e3963f02be307d319ef37f77140ffe5065cd3a",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "DOWrobinhood": {
       chain: "arbitrum",
@@ -13133,7 +13139,7 @@ export default createConfig({
       chain: "arbitrum",
       abi: RobinhoodTokenABI,
       address: "0x0576daeb6b9947f2663de7f2a2d9c9b0e44b4aa1",
-      startBlock: 0, // TODO: Update with actual start block
+      startBlock: 339773155, // TODO: Update with actual start block
     },
     "GOOGrobinhood": {
       chain: "arbitrum",
