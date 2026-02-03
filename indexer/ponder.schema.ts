@@ -153,3 +153,21 @@ export const transfer = onchainTable("ondo_transfer", (t) => ({
   transactionHash: t.hex(),
   logIndex: t.integer(),
 }));
+
+// Robinhood Transfer event: from, to, value
+export const robinhoodTransfer = onchainTable("robinhood_transfer", (t) => ({
+  id: t.text().primaryKey(),
+  tokenName: t.text(),
+  contractAddress: t.hex(),
+  tokenType: t.text(),
+  tokenTypeDetail: t.text(),
+  ticker: t.text(),
+  stockTicker: t.text(),
+  from: t.hex(),
+  to: t.hex(),
+  value: t.bigint(),
+  blockNumber: t.bigint(),
+  blockTimestamp: t.bigint(),
+  transactionHash: t.hex(),
+  logIndex: t.integer(),
+}));

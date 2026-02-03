@@ -4,6 +4,11 @@ import { getTokenMetadata } from "../tokenMetadata";
 import { CONTRACT_NAMES } from "../contracts";
 
 for (const contractName of CONTRACT_NAMES) {
+  // Skip Robinhood contracts - they don't have NameChanged event in their ABI
+  if (contractName.toLowerCase().endsWith("robinhood")) {
+    continue;
+  }
+  
   ponder.on(`${contractName}:NameChanged`, async ({ event, context }) => {
   const { db } = context;
     const { args, block, transaction, log } = event;
