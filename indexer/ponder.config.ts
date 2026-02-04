@@ -19,7 +19,8 @@ export default createConfig({
       // For production, set PONDER_RPC_URL_42161 to your preferred RPC provider
       rpc: loadBalance([
         //rateLimit(http("https://arbitrum-mainnet.infura.io/v3/3f152de5c51d4490b60883598c1d8418"), { requestsPerSecond: 30 }), //Infura RPC
-        rateLimit(http("https://arb-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), { requestsPerSecond: 90 }), //Alchemy RPC
+        //rateLimit(http("https://arb-mainnet.g.alchemy.com/v2/TljSBj78y_f7Eky0LTdU2"), { requestsPerSecond: 90 }),
+        rateLimit(http("https://api-arbitrum-mainnet-full.n.dwellir.com/254965af-04d7-43c6-bb5c-667a0462ca46"), { requestsPerSecond: 90 }), //Alchemy RPC
       ]),
       
     },
