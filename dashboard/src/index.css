@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-accent: #00E5C3;
+    --color-positive: #00D67F;
+    --color-negative: #FF4D6A;
+    --color-warning: #FFB547;
+    --color-surface-700: #121926;
+    --color-surface-800: #0D1420;
+    --color-surface-900: #0A0D12;
+  }
+
+  /* Dark theme (default fallback - :root always matches html) */
+  :root {
+    --theme-bg-page: #0A0D12;
+    --theme-bg-surface: #0D1420;
+    --theme-bg-card: rgba(255, 255, 255, 0.03);
+    --theme-text-primary: #E2E6EC;
+    --theme-text-secondary: #8A97A8;
+    --theme-border: rgba(255, 255, 255, 0.06);
+    --theme-scrollbar-track: #0D1420;
+    --theme-scrollbar-thumb: #2A3344;
+  }
+
+  /* Light theme - must come after :root so it overrides when data-theme="light" */
+  [data-theme='light'] {
+    --theme-bg-page: #f0f2f5;
+    --theme-bg-surface: #ffffff;
+    --theme-bg-card: #ffffff;
+    --theme-text-primary: #0A0D12;
+    --theme-text-secondary: #4D5A6B;
+    --theme-border: rgba(0, 0, 0, 0.08);
+    --theme-scrollbar-track: #e2e6ec;
+    --theme-scrollbar-thumb: #c5cdd9;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--theme-bg-page);
+    color: var(--theme-text-primary);
+    font-family: 'DM Sans', sans-serif;
+    margin: 0;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--theme-scrollbar-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--theme-scrollbar-thumb);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4D5A6B;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(0, 229, 195, 0.25);
+    color: var(--theme-text-primary);
+  }
+}
+
+@layer components {
+  /* Recharts custom dark theme overrides */
+  .recharts-cartesian-grid-horizontal line,
+  .recharts-cartesian-grid-vertical line {
+    stroke: rgba(255,255,255,0.05);
+  }
+
+  .recharts-text {
+    fill: #8A97A8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+
+  .recharts-legend-item-text {
+    fill: #8A97A8 !important;
+    color: #8A97A8 !important;
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 12px;
+  }
+
+  .recharts-tooltip-wrapper .recharts-default-tooltip {
+    background: #121926 !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  }
+
+  .recharts-tooltip-label {
+    color: #8A97A8 !important;
+    font-size: 11px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    margin-bottom: 4px !important;
+  }
+
+  .recharts-tooltip-item {
+    color: #E2E6EC !important;
+    font-size: 13px !important;
+  }
+
+  /* Recharts light mode overrides */
+  [data-theme='light'] .recharts-cartesian-grid-horizontal line,
+  [data-theme='light'] .recharts-cartesian-grid-vertical line {
+    stroke: rgba(0,0,0,0.06);
+  }
+  [data-theme='light'] .recharts-text,
+  [data-theme='light'] .recharts-legend-item-text {
+    fill: #4D5A6B !important;
+    color: #4D5A6B !important;
+  }
+  [data-theme='light'] .recharts-tooltip-wrapper .recharts-default-tooltip {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  }
+  [data-theme='light'] .recharts-tooltip-label { color: #4D5A6B !important; }
+  [data-theme='light'] .recharts-tooltip-item { color: #0A0D12 !important; }
+
+  /* Animated entry for staggered cards */
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+  .stagger-5 { animation-delay: 0.25s; }
+  .stagger-6 { animation-delay: 0.30s; }
+}
+
+@layer utilities {
+  .text-positive { color: #00D67F; }
+  .text-negative { color: #FF4D6A; }
+  .text-warning  { color: #FFB547; }
+  .text-accent   { color: #00E5C3; }
+  .text-muted    { color: #4D5A6B; }
+  .text-secondary { color: #8A97A8; }
+
+  .bg-surface-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+  }
+
+  .bg-surface-card-hover:hover {
+    border-color: rgba(0,229,195,0.2);
+  }
+  [data-theme='dark'] .bg-surface-card-hover:hover { background: rgba(255,255,255,0.05); }
+  [data-theme='light'] .bg-surface-card-hover:hover { background: rgba(0,0,0,0.03); }
+
+  .border-subtle  { border-color: var(--theme-border); }
+  .border-default { border-color: var(--theme-border); }
+  .border-strong  { border-color: var(--theme-border); }
+  [data-theme='light'] .border-default,
+  [data-theme='light'] .border-strong { border-color: rgba(0,0,0,0.12); }
+
+  .glow-accent-bg {
+    background: radial-gradient(ellipse 50% 30% at 50% 0%, rgba(0,229,195,0.10) 0%, transparent 70%);
+  }
+
+  .theme-page { background-color: var(--theme-bg-page); }
+  .theme-nav { background-color: var(--theme-bg-surface); }
+
+  /* Light mode overrides for Tailwind surface classes - use !important to override Tailwind */
+  [data-theme='light'] .bg-surface-700,
+  [data-theme='light'] .bg-surface-800,
+  [data-theme='light'] .bg-surface-800\/60 {
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+  [data-theme='light'] .bg-surface-900 {
+    background-color: #e2e6ec !important; /* slightly darker for tab pills */
+  }
+  [data-theme='light'] .text-surface-50,
+  [data-theme='light'] .text-surface-100,
+  [data-theme='light'] .text-surface-200,
+  [data-theme='light'] .text-surface-300 {
+    color: var(--theme-text-primary) !important;
+  }
+  [data-theme='light'] .text-secondary {
+    color: var(--theme-text-secondary) !important;
+  }
+  [data-theme='light'] .text-muted {
+    color: var(--theme-text-secondary) !important;
+  }
+  [data-theme='light'] input.bg-surface-700,
+  [data-theme='light'] input[class*='bg-surface'] {
+    background-color: #f0f2f5 !important;
+  }
+}

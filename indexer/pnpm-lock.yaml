@@ -11,9 +11,12 @@ importers:
       hono:
         specifier: ^4.5.0
         version: 4.11.7
+      pg:
+        specifier: ^8.13.0
+        version: 8.17.2
       ponder:
         specifier: ^0.16.2
-        version: 0.16.2(@opentelemetry/api@1.9.0)(@types/node@20.19.30)(hono@4.11.7)(typescript@5.9.3)(viem@2.45.0(typescript@5.9.3))
+        version: 0.16.2(@opentelemetry/api@1.9.0)(@types/node@20.19.30)(@types/pg@8.16.0)(hono@4.11.7)(typescript@5.9.3)(viem@2.45.0(typescript@5.9.3))
       viem:
         specifier: ^2.21.3
         version: 2.45.0(typescript@5.9.3)
@@ -21,6 +24,9 @@ importers:
       '@types/node':
         specifier: ^20.9.0
         version: 20.19.30
+      '@types/pg':
+        specifier: ^8.11.10
+        version: 8.16.0
       eslint:
         specifier: ^8.53.0
         version: 8.57.1
@@ -494,6 +500,9 @@ packages:
 
   '@types/node@20.19.30':
     resolution: {integrity: sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==}
+
+  '@types/pg@8.16.0':
+    resolution: {integrity: sha512-RmhMd/wD+CF8Dfo+cVIy3RR5cl8CyfXQ0tGgW6XBL8L4LM/UTEbNXYRbLwU6w+CgrKBNbrQWt4FUtTfaU5jSYQ==}
 
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
@@ -2086,6 +2095,12 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/pg@8.16.0':
+    dependencies:
+      '@types/node': 20.19.30
+      pg-protocol: 1.11.0
+      pg-types: 2.2.0
+
   '@types/semver@7.7.1': {}
 
   '@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)':
@@ -2371,10 +2386,11 @@ snapshots:
 
   dotenv@16.6.1: {}
 
-  drizzle-orm@0.41.0(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.17.2):
+  drizzle-orm@0.41.0(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(kysely@0.26.3)(pg@8.17.2):
     optionalDependencies:
       '@electric-sql/pglite': 0.2.13
       '@opentelemetry/api': 1.9.0
+      '@types/pg': 8.16.0
       kysely: 0.26.3
       pg: 8.17.2
 
@@ -2900,7 +2916,7 @@ snapshots:
       sonic-boom: 3.8.1
       thread-stream: 2.7.0
 
-  ponder@0.16.2(@opentelemetry/api@1.9.0)(@types/node@20.19.30)(hono@4.11.7)(typescript@5.9.3)(viem@2.45.0(typescript@5.9.3)):
+  ponder@0.16.2(@opentelemetry/api@1.9.0)(@types/node@20.19.30)(@types/pg@8.16.0)(hono@4.11.7)(typescript@5.9.3)(viem@2.45.0(typescript@5.9.3)):
     dependencies:
       '@babel/code-frame': 7.28.6
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -2917,7 +2933,7 @@ snapshots:
       dataloader: 2.2.3
       detect-package-manager: 3.0.2
       dotenv: 16.6.1
-      drizzle-orm: 0.41.0(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.17.2)
+      drizzle-orm: 0.41.0(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(kysely@0.26.3)(pg@8.17.2)
       glob: 10.5.0
       graphql: 16.8.2
       graphql-yoga: 5.17.1(graphql@16.8.2)

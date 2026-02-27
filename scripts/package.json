@@ -1,0 +1,1 @@
+{"name":"scripts","version":"0.0.1","private":true,"type":"module","scripts":{"fetch-stocks":"tsx fetch_stocks.ts","fetch-stocks-range":"tsx fetch_stocks_range.ts","fetch-ticker-reference":"tsx fetch_ticker_reference.ts"},"dependencies":{"dotenv":"^16.4.5","pg":"^8.13.0","pg-format":"^1.0.4"},"devDependencies":{"@types/pg":"^8.11.10","tsx":"^4.19.2","typescript":"^5.2.2"}}
