@@ -13,9 +13,10 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "drizzle-orm": "^0.41.0",
+    "hono": "^4.5.0",
     "pg": "^8.13.0",
     "ponder": "^0.16.2",
-    "hono": "^4.5.0",
     "viem": "^2.21.3"
   },
   "devDependencies": {
