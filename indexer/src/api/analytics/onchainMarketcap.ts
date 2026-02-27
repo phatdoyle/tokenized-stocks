@@ -14,7 +14,7 @@ app.get("/onchain-marketcap", async (c) => {
     return c.json({ error: "DATABASE_URL not configured" }, 500);
   }
   const schema = process.env.DATABASE_SCHEMA ?? "stocks";
-  const schemaQ = quoteIdentifier(schema);
+
 
   const client = new pg.Client({ connectionString: databaseUrl });
   try {
@@ -22,19 +22,19 @@ app.get("/onchain-marketcap", async (c) => {
     const result = await client.query(`
       WITH mints_burns AS (
         SELECT stock_ticker, contract_address, sum(value / power(10, 18)) AS amount
-        FROM ${schemaQ}.ondo_transfer
+        FROM ondo_transfer
         WHERE "from" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2
         UNION ALL
         SELECT stock_ticker, contract_address, -sum(value / power(10, 18)) AS amount
-        FROM ${schemaQ}.ondo_transfer
+        FROM ondo_transfer
         WHERE "to" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2
       ),
       prices AS (
         SELECT *
-        FROM ${schemaQ}.daily_stock_summary
-        WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM ${schemaQ}.daily_stock_summary)
+        FROM daily_stock_summary
+        WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary)
       )
       SELECT
         a.stock_ticker,
@@ -89,27 +89,27 @@ app.get("/marketcap-onchain-vs-offchain", async (c) => {
         SELECT
           new_token AS contract_address,
           left(symbol, length(symbol) - 1) AS stock_ticker
-        FROM ${schemaQ}.xstock_deployed
+        FROM xstock_deployed
       ),
       total_supply AS (
         SELECT stock_ticker, contract_address, 'ondo' AS protocol, sum(value / power(10, 18)) AS amount
-        FROM ${schemaQ}.ondo_transfer
+        FROM ondo_transfer
         WHERE "from" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2, 3
         UNION ALL
         SELECT stock_ticker, contract_address, 'ondo' AS protocol, -sum(value / power(10, 18)) AS amount
-        FROM ${schemaQ}.ondo_transfer
+        FROM ondo_transfer
         WHERE "to" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2, 3
         UNION ALL
         SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, sum(a.value / power(10, 18)) AS amount
-        FROM ${schemaQ}.xstock_transfer a
+        FROM xstock_transfer a
         LEFT JOIN xstocks_tickers b ON a.contract_address = b.contract_address
         WHERE a."from" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2, 3
         UNION ALL
         SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, -sum(a.value / power(10, 18)) AS amount
-        FROM ${schemaQ}.xstock_transfer a
+        FROM xstock_transfer a
         LEFT JOIN xstocks_tickers b ON a.contract_address = b.contract_address
         WHERE a."to" = '0x0000000000000000000000000000000000000000'
         GROUP BY 1, 2, 3
@@ -181,7 +181,7 @@ app.get("/marketcap-over-time/:ticker", async (c) => {
             stock_ticker,
             contract_address,
             sum(value / power(10, 18)) AS amount
-          FROM ${schemaQ}.ondo_transfer
+          FROM ondo_transfer
           WHERE "from" = '0x0000000000000000000000000000000000000000'
             AND stock_ticker = $1
           GROUP BY 1, 2, 3
@@ -191,7 +191,7 @@ app.get("/marketcap-over-time/:ticker", async (c) => {
             stock_ticker,
             contract_address,
             -sum(value / power(10, 18)) AS amount
-          FROM ${schemaQ}.ondo_transfer
+          FROM ondo_transfer
           WHERE "to" = '0x0000000000000000000000000000000000000000'
             AND stock_ticker = $1
           GROUP BY 1, 2, 3
@@ -219,7 +219,7 @@ app.get("/marketcap-over-time/:ticker", async (c) => {
           to_timestamp(bar_timestamp / 1000)::date AS date,
           avg(close_price) AS close_price,
           sum(volume) AS volume
-        FROM ${schemaQ}.daily_stock_summary
+        FROM daily_stock_summary
         WHERE ticker = $1
         GROUP BY 1, 2
       ),
