@@ -355,3 +355,53 @@ export const xStockTransferShares = onchainTable("xstock_transferShares", (t) =>
   transactionHash: t.hex(),
   logIndex: t.integer(),
 }));
+
+// daily_stock_summary - populated by fetch_stocks script from Polygon API
+export const dailyStockSummary = onchainTable("daily_stock_summary", (t) => ({
+  id: t.integer().primaryKey(),
+  ticker: t.text().notNull(),
+  closePrice: t.real(),
+  high: t.real(),
+  low: t.real(),
+  numTransactions: t.integer(),
+  open: t.real(),
+  barTimestamp: t.bigint(),
+  volume: t.real(),
+  volumeWeightedPrice: t.real(),
+}));
+
+// ticker_reference - populated by fetch_ticker_reference script from Polygon API
+export const tickerReference = onchainTable("ticker_reference", (t) => ({
+  ticker: t.text().primaryKey(),
+  requestId: t.text(),
+  status: t.text(),
+  active: t.boolean(),
+  cik: t.text(),
+  compositeFigi: t.text(),
+  currencyName: t.text(),
+  description: t.text(),
+  homepageUrl: t.text(),
+  listDate: t.text(),
+  locale: t.text(),
+  market: t.text(),
+  marketCap: t.real(),
+  name: t.text(),
+  phoneNumber: t.text(),
+  primaryExchange: t.text(),
+  roundLot: t.integer(),
+  shareClassFigi: t.text(),
+  shareClassSharesOutstanding: t.real(),
+  sicCode: t.text(),
+  sicDescription: t.text(),
+  tickerRoot: t.text(),
+  totalEmployees: t.integer(),
+  type: t.text(),
+  weightedSharesOutstanding: t.real(),
+  addressAddress1: t.text(),
+  addressCity: t.text(),
+  addressPostalCode: t.text(),
+  addressState: t.text(),
+  brandingIconUrl: t.text(),
+  brandingLogoUrl: t.text(),
+  updatedAt: t.timestamp().notNull(),
+}));
