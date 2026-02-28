@@ -4,7 +4,7 @@ import OnchainMarketcapChart from './components/OnchainMarketcapChart';
 
 const NAV_LINKS = [
   { to: '/',                  label: 'Market Cap' },
-  { to: '/market-cap',        label: 'Market Cap' },
+  // { to: '/market-cap',        label: 'Market Cap' },
   // { to: '/volume',            label: 'Volume' },
   // { to: '/transfers',         label: 'Transfers' },
   // { to: '/tokens',            label: 'Tokens' },
@@ -106,7 +106,7 @@ function AppShell() {
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-6">
         <Routes>
           <Route path="/"                element={<OnchainMarketcapChart />} />
-          <Route path="/market-cap"      element={<OnchainMarketcapChart />} />
+          {/* <Route path="/market-cap"      element={<OnchainMarketcapChart />} /> */}
           {/* <Route path="/volume"          element={<VolumeChart />} />
           <Route path="/transfers"       element={<TransferCountChart />} />
           <Route path="/transfer-shares" element={<TransferSharesVolumeChart />} />
