@@ -7,9 +7,9 @@ const QUERY = `
       to_timestamp(bar_timestamp / 1000.0)::date AS bar_date,
       b.share_class_shares_outstanding,
       (a.close_price * b.share_class_shares_outstanding) AS total_marketcap
-    FROM public.daily_stock_summary a
-    LEFT JOIN public.ticker_reference b ON a.ticker = b.ticker
-    WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM public.daily_stock_summary)
+    FROM daily_stock_summary a
+    LEFT JOIN ticker_reference b ON a.ticker = b.ticker
+    WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary)
       AND b.share_class_shares_outstanding IS NOT NULL
   ),
   xstocks_tickers AS (
