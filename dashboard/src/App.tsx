@@ -1,20 +1,9 @@
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
-import VolumeChart from './components/VolumeChart';
-import TransferCountChart from './components/TransferCountChart';
-import TokensVolumeLeaderboard from './components/TokensVolumeLeaderboard';
-import TokensActivityLeaderboard from './components/TokensActivityLeaderboard';
-import AddressesVolumeLeaderboard from './components/AddressesVolumeLeaderboard';
-import TokenDetail from './components/TokenDetail';
-import AddressDetail from './components/AddressDetail';
-import RecentTransfers from './components/RecentTransfers';
-import GlobalStats from './components/GlobalStats';
-import StatsByProtocol from './components/StatsByProtocol';
-import TransferSharesVolumeChart from './components/TransferSharesVolumeChart';
 import OnchainMarketcapChart from './components/OnchainMarketcapChart';
 
 const NAV_LINKS = [
-  { to: '/',                  label: 'Overview' },
+  { to: '/',                  label: 'Market Cap' },
   { to: '/market-cap',        label: 'Market Cap' },
   // { to: '/volume',            label: 'Volume' },
   // { to: '/transfers',         label: 'Transfers' },
@@ -64,7 +53,7 @@ function NavBar() {
               </svg>
             </div>
             <span className="font-display font-semibold text-surface-50 text-base tracking-tight">
-              TokenFlow
+              Onchain Equities
             </span>
           </div>
           <span className="px-2 py-0.5 text-[10px] font-mono font-semibold text-accent border border-accent/30 bg-accent/8 rounded-md uppercase tracking-widest">
@@ -116,7 +105,7 @@ function AppShell() {
       <NavBar />
       <main className="max-w-screen-xl mx-auto px-4 sm:px-6 py-6">
         <Routes>
-          <Route path="/"                element={<GlobalStats />} />
+          <Route path="/"                element={<OnchainMarketcapChart />} />
           <Route path="/market-cap"      element={<OnchainMarketcapChart />} />
           {/* <Route path="/volume"          element={<VolumeChart />} />
           <Route path="/transfers"       element={<TransferCountChart />} />

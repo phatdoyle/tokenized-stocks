@@ -20,6 +20,12 @@ function fmtMktcap(value: number) {
   return `$${value.toFixed(2)}`;
 }
 
+function fmtDate(value: string | number) {
+  if (value == null) return '';
+  const d = typeof value === 'string' ? new Date(value) : new Date(value);
+  return isNaN(d.getTime()) ? String(value) : d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 export default function OnchainMarketcapChart() {
   const { data, isLoading: loading, error } = useOnchainMarketcap();
   const navigate = useNavigate();

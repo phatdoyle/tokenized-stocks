@@ -17,7 +17,7 @@ import type {
   ByVolume,
 } from './types';
 
-const API_BASE = 'http://localhost:42069';
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:42069';
 
 async function fetchAPI<T>(endpoint: string, params?: Record<string, string | undefined>): Promise<T> {
   const url = new URL(endpoint, API_BASE);
