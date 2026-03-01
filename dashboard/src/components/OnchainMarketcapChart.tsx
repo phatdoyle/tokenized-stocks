@@ -29,8 +29,9 @@ function fmtDate(value: string | number) {
 export default function OnchainMarketcapChart() {
   const { data, isLoading: loading, error } = useOnchainMarketcap();
 
+  const EXCLUDED_TICKERS = ['TBLL'];
   const symbols = useMemo(
-    () => [...new Set((data?.data ?? []).map((d) => d.stock_ticker).filter(Boolean))].sort() as string[],
+    () => [...new Set((data?.data ?? []).map((d) => d.stock_ticker).filter((t) => t && !EXCLUDED_TICKERS.includes(t)))].sort() as string[],
     [data?.data],
   );
 
@@ -55,7 +56,7 @@ export default function OnchainMarketcapChart() {
     >();
     for (const item of rawData) {
       const ticker = item.stock_ticker;
-      if (!ticker) continue;
+      if (!ticker || EXCLUDED_TICKERS.includes(ticker)) continue;
       const mcap = item.onchain_marketcap ? parseFloat(item.onchain_marketcap) : 0;
       const existing = map.get(ticker);
       if (!existing) {

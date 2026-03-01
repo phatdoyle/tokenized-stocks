@@ -355,7 +355,6 @@ export const xStockTransferShares = onchainTable("xstock_transferShares", (t) =>
   transactionHash: t.hex(),
   logIndex: t.integer(),
 }));
-
 // daily_stock_summary - populated by fetch_stocks script from Polygon API
 export const dailyStockSummary = onchainTable("daily_stock_summary", (t) => ({
   id: t.integer().primaryKey(),
@@ -405,3 +404,4 @@ export const tickerReference = onchainTable("ticker_reference", (t) => ({
   brandingLogoUrl: t.text(),
   updatedAt: t.timestamp().notNull(),
 }));
+

@@ -106,12 +106,10 @@ export interface GlobalStats {
 
 export interface OnchainMarketcapItem {
   stock_ticker: string;
-  protocol: string;
-  onchain_supply: string | null;
-  close_price: string | null;
-  total_marketcap: string | null;
+  contract_address: string;
+  close_price: number | null;
+  supply: string | null;
   onchain_marketcap: string | null;
-  percent_of_mcap_onchain: string | null;
 }
 
 export interface OnchainMarketcapResponse {
