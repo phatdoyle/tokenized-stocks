@@ -196,3 +196,15 @@ export function useMarketcapOnchainVsOffchain() {
     enabled: true,
   });
 }
+
+export function useHolderBalances(params: {
+  ticker?: string;
+  address?: string;
+  protocol?: Protocol;
+}) {
+  return useQuery({
+    queryKey: ["analytics", "holderBalances", params],
+    queryFn: () => api.holderBalances(params),
+    enabled: !!(params.ticker || params.address),
+  });
+}

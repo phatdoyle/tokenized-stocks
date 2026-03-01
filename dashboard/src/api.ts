@@ -10,6 +10,7 @@ import type {
   OnchainMarketcapResponse,
   MarketcapOverTimeResponse,
   MarketcapOnchainVsOffchainResponse,
+  HolderBalancesResponse,
   Protocol,
   Interval,
   Period,
@@ -92,4 +93,7 @@ export const api = {
 
   marketcapOnchainVsOffchain: () =>
     fetchAPI<MarketcapOnchainVsOffchainResponse>('/marketcap-onchain-vs-offchain'),
+
+  holderBalances: (params: { ticker?: string; address?: string; protocol?: Protocol }) =>
+    fetchAPI<HolderBalancesResponse>('/holder-balances', params),
 };

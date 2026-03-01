@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   PieChart, Pie, Cell,
@@ -28,6 +29,7 @@ function fmtDate(value: string | number) {
 
 export default function OnchainMarketcapChart() {
   const { data, isLoading: loading, error } = useOnchainMarketcap();
+  const navigate = useNavigate();
 
   const EXCLUDED_TICKERS = ['TBLL'];
   const symbols = useMemo(
@@ -94,7 +96,7 @@ export default function OnchainMarketcapChart() {
     onchain_marketcap: d.onchain_marketcap ? parseFloat(d.onchain_marketcap) : 0,
   })) ?? [];
 
-  const tickerOptions = symbols.map((s) => ({ value: s, label: s }));
+  const tickerOptions = [...symbols].sort().map((s) => ({ value: s, label: s }));
 
   return (
     <div className="space-y-6">
@@ -161,6 +163,7 @@ export default function OnchainMarketcapChart() {
               <DataTable
                 data={groupedTableData}
                 rowKey={(item) => item.stock_ticker}
+                onRowClick={(item) => navigate(`/ticker/${item.stock_ticker}`)}
                 columns={[
                   {
                     key: 'ticker',
