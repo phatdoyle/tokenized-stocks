@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
   PieChart, Pie, Cell,
 } from 'recharts';
+import type { OnchainMarketcapItem } from '../types';
 import { useOnchainMarketcap, useMarketcapOverTime } from '../hooks/useAnalytics';
 import { Card } from './ui/Card';
 import { ControlBar, SelectField } from './ui/Controls';
@@ -28,7 +28,6 @@ function fmtDate(value: string | number) {
 
 export default function OnchainMarketcapChart() {
   const { data, isLoading: loading, error } = useOnchainMarketcap();
-  const navigate = useNavigate();
 
   const symbols = useMemo(
     () => [...new Set((data?.data ?? []).map((d) => d.stock_ticker).filter(Boolean))].sort() as string[],
@@ -47,12 +46,39 @@ export default function OnchainMarketcapChart() {
 
   const { data: timeData, isLoading: timeLoading } = useMarketcapOverTime(effectiveTicker);
 
-  const tableData = data?.data?.map((item, idx) => ({ ...item, idx })) ?? [];
+  const rawData: OnchainMarketcapItem[] = data?.data ?? [];
 
-  const allPieData = tableData.map((item, idx) => ({
-    name:            item.stock_ticker,
-    value:           item.onchain_marketcap ? parseFloat(item.onchain_marketcap) : 0,
-    contractAddress: item.contract_address,
+  const groupedTableData = useMemo(() => {
+    const map = new Map<
+      string,
+      { stock_ticker: string; close_price: string | null; ondo_marketcap: number; xstock_marketcap: number; total_marketcap: number }
+    >();
+    for (const item of rawData) {
+      const ticker = item.stock_ticker;
+      if (!ticker) continue;
+      const mcap = item.onchain_marketcap ? parseFloat(item.onchain_marketcap) : 0;
+      const existing = map.get(ticker);
+      if (!existing) {
+        map.set(ticker, {
+          stock_ticker: ticker,
+          close_price: item.close_price,
+          ondo_marketcap: item.protocol === 'ondo' ? mcap : 0,
+          xstock_marketcap: item.protocol === 'xstock' ? mcap : 0,
+          total_marketcap: mcap,
+        });
+      } else {
+        if (item.protocol === 'ondo') existing.ondo_marketcap = mcap;
+        else if (item.protocol === 'xstock') existing.xstock_marketcap = mcap;
+        existing.total_marketcap = existing.ondo_marketcap + existing.xstock_marketcap;
+      }
+    }
+    return Array.from(map.values()).sort((a, b) => b.total_marketcap - a.total_marketcap);
+  }, [rawData]);
+
+  const allPieData = groupedTableData.map((item, idx) => ({
+    name: item.stock_ticker,
+    value: item.total_marketcap,
+    stock_ticker: item.stock_ticker,
     idx,
   })).filter((d) => d.value > 0);
 
@@ -78,9 +104,9 @@ export default function OnchainMarketcapChart() {
 
       {loading && <LoadingState />}
       {error   && <ErrorState message={error.message} />}
-      {!loading && !error && tableData.length === 0 && <EmptyState />}
+      {!loading && !error && groupedTableData.length === 0 && <EmptyState />}
 
-      {!loading && !error && tableData.length > 0 && (
+      {!loading && !error && groupedTableData.length > 0 && (
         <>
           {/* Distribution + table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -102,8 +128,6 @@ export default function OnchainMarketcapChart() {
                       paddingAngle={2}
                       label={({ name }) => name}
                       labelLine
-                      onClick={(d) => navigate(`/token/${d.contractAddress}`)}
-                      style={{ cursor: 'pointer' }}
                     >
                       {pieData.map((_entry, idx) => (
                         <Cell key={idx} fill={getChartColor(idx)} fillOpacity={0.9} />
@@ -134,9 +158,8 @@ export default function OnchainMarketcapChart() {
               </div>
               <div className="max-h-[400px] overflow-y-auto">
               <DataTable
-                data={tableData}
-                rowKey={(item) => item.contract_address}
-                onRowClick={(item) => navigate(`/token/${item.contract_address}`)}
+                data={groupedTableData}
+                rowKey={(item) => item.stock_ticker}
                 columns={[
                   {
                     key: 'ticker',
@@ -152,32 +175,38 @@ export default function OnchainMarketcapChart() {
                     render: (item) => (
                       <span className="font-mono text-surface-100">
                         {item.close_price != null
-                          ? `$${item.close_price.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                          ? `$${parseFloat(item.close_price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`
                           : '—'}
                       </span>
                     ),
                   },
                   {
-                    key: 'supply',
-                    header: 'Supply',
+                    key: 'ondo',
+                    header: 'Ondo',
                     align: 'right',
                     render: (item) => (
                       <span className="font-mono text-surface-200">
-                        {item.supply != null
-                          ? parseFloat(item.supply).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                          : '—'}
+                        {item.ondo_marketcap > 0 ? fmtMktcap(item.ondo_marketcap) : '—'}
                       </span>
                     ),
                   },
                   {
-                    key: 'mktcap',
-                    header: 'Mkt Cap',
+                    key: 'xstock',
+                    header: 'Xstock',
+                    align: 'right',
+                    render: (item) => (
+                      <span className="font-mono text-surface-200">
+                        {item.xstock_marketcap > 0 ? fmtMktcap(item.xstock_marketcap) : '—'}
+                      </span>
+                    ),
+                  },
+                  {
+                    key: 'total',
+                    header: 'Total',
                     align: 'right',
                     render: (item) => (
                       <span className="font-mono text-surface-100 font-medium">
-                        {item.onchain_marketcap != null
-                          ? fmtMktcap(parseFloat(item.onchain_marketcap))
-                          : '—'}
+                        {fmtMktcap(item.total_marketcap)}
                       </span>
                     ),
                   },
