@@ -2,8 +2,8 @@ import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
-  PieChart, Pie, Cell,
 } from 'recharts';
+import { D3Treemap } from './D3Treemap';
 import type { OnchainMarketcapItem } from '../types';
 import { useOnchainMarketcap, useMarketcapOverTime } from '../hooks/useAnalytics';
 import { Card } from './ui/Card';
@@ -78,18 +78,41 @@ export default function OnchainMarketcapChart() {
     return Array.from(map.values()).sort((a, b) => b.total_marketcap - a.total_marketcap);
   }, [rawData]);
 
-  const allPieData = groupedTableData.map((item, idx) => ({
-    name: item.stock_ticker,
-    value: item.total_marketcap,
-    stock_ticker: item.stock_ticker,
-    idx,
-  })).filter((d) => d.value > 0);
+  const treemapData = useMemo(() => {
+    return groupedTableData
+      .filter((d) => d.total_marketcap > 0)
+      .sort((a, b) => b.total_marketcap - a.total_marketcap)
+      .slice(0, 20)
+        .map((item, idx) => {
+        const tickerColor = getChartColor(idx);
+        const children = [
+          item.ondo_marketcap > 0 && {
+            name: 'Ondo',
+            value: item.ondo_marketcap,
+            fill: tickerColor,
+            stock_ticker: item.stock_ticker,
+          },
+          item.xstock_marketcap > 0 && {
+            name: 'xStock',
+            value: item.xstock_marketcap,
+            fill: tickerColor,
+            stock_ticker: item.stock_ticker,
+          },
+        ].filter(Boolean) as { name: string; value: number; fill: string; stock_ticker: string }[];
+        return {
+          name: item.stock_ticker,
+          stock_ticker: item.stock_ticker,
+          fill: tickerColor,
+          children,
+        };
+      })
+      .filter((d) => d.children.length > 0);
+  }, [groupedTableData]);
 
-  const pieData = [...allPieData]
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 20);
-
-  const total = pieData.reduce((s, d) => s + d.value, 0);
+  const total = groupedTableData
+    .filter((d) => d.total_marketcap > 0)
+    .slice(0, 20)
+    .reduce((s, d) => s + d.total_marketcap, 0);
 
   const areaData = timeData?.data?.map((d) => ({
     date:            d.date,
@@ -113,45 +136,19 @@ export default function OnchainMarketcapChart() {
         <>
           {/* Distribution + table */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card noPadding>
-              <div className="p-5 border-b border-subtle">
+            <Card noPadding className="flex flex-col min-h-[400px]">
+              <div className="p-5 border-b border-subtle shrink-0 flex items-center justify-between gap-4">
                 <h2 className="font-display text-sm font-semibold text-surface-100">Distribution</h2>
+                <span className="font-mono text-sm font-medium text-accent">{fmtMktcap(total)} total</span>
               </div>
-              <div className="p-5">
-                <ChartContainer height={280}>
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={110}
-                      paddingAngle={2}
-                      label={({ name }) => name}
-                      labelLine
-                    >
-                      {pieData.map((_entry, idx) => (
-                        <Cell key={idx} fill={getChartColor(idx)} fillOpacity={0.9} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      content={({ active, payload }) => {
-                        if (!active || !payload?.length) return null;
-                        const p = payload[0]?.payload;
-                        const pct = total > 0 ? ((p?.value ?? 0) / total * 100).toFixed(1) : '0';
-                        return (
-                          <ChartTooltip active={active}>
-                            <p className="text-xs text-secondary mb-1">{p?.name}</p>
-                            <p className="font-mono text-surface-100">{fmtMktcap(p?.value ?? 0)}</p>
-                            <p className="text-xs text-secondary">{pct}% share</p>
-                          </ChartTooltip>
-                        );
-                      }}
-                    />
-                  </PieChart>
-                </ChartContainer>
+              <div className="flex-1 min-h-0 p-5 flex min-h-[280px]">
+                <D3Treemap
+                  data={treemapData}
+                  total={total}
+                  fmtValue={fmtMktcap}
+                  onNodeClick={(node) => node.stock_ticker && navigate(`/ticker/${node.stock_ticker}`)}
+                  className="flex-1"
+                />
               </div>
             </Card>
 

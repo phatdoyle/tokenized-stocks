@@ -4,7 +4,7 @@ import { cn } from '../../lib/cn';
 
 interface ChartContainerProps {
   children: ReactNode;
-  height?: number;
+  height?: number | string;
   className?: string;
 }
 
@@ -13,7 +13,7 @@ interface ChartContainerProps {
  */
 export function ChartContainer({ children, height = 320, className }: ChartContainerProps) {
   return (
-    <div className={cn('w-full', className)} style={{ height }}>
+    <div className={cn('w-full', className)} style={{ height: height === '100%' ? '100%' : height }}>
       <ResponsiveContainer width="100%" height="100%">
         {children as React.ReactElement}
       </ResponsiveContainer>
