@@ -161,6 +161,25 @@ export interface MarketcapOnchainVsOffchainResponse {
   data: MarketcapOnchainVsOffchainItem[];
 }
 
+export interface TransfersMintsBurnsItem {
+  date: string;
+  stock_ticker: string | null;
+  shares_mints: string | null;
+  num_mint_txs: string | null;
+  shares_burned: string | null;
+  num_burn_txs: string | null;
+  transfer_amount: string | null;
+  usd_transfer_value: string | null;
+  close_price: string | null;
+  protocol: string;
+  network: string;
+}
+
+export interface TransfersMintsBurnsResponse {
+  data: TransfersMintsBurnsItem[];
+  ticker: string;
+}
+
 export interface StatsByProtocolResponse {
   period: string;
   ondo: {

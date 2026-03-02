@@ -208,3 +208,11 @@ export function useHolderBalances(params: {
     enabled: !!(params.ticker || params.address),
   });
 }
+
+export function useTransfersMintsBurns(ticker: string | undefined) {
+  return useQuery({
+    queryKey: ["analytics", "transfersMintsBurns", ticker],
+    queryFn: () => api.transfersMintsBurns(ticker!),
+    enabled: !!ticker,
+  });
+}

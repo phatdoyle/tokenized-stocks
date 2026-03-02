@@ -11,6 +11,7 @@ import type {
   MarketcapOverTimeResponse,
   MarketcapOnchainVsOffchainResponse,
   HolderBalancesResponse,
+  TransfersMintsBurnsResponse,
   Protocol,
   Interval,
   Period,
@@ -96,4 +97,7 @@ export const api = {
 
   holderBalances: (params: { ticker?: string; address?: string; protocol?: Protocol }) =>
     fetchAPI<HolderBalancesResponse>('/holder-balances', params),
+
+  transfersMintsBurns: (ticker: string) =>
+    fetchAPI<TransfersMintsBurnsResponse>(`/transfers-mints-burns/${encodeURIComponent(ticker)}`),
 };
