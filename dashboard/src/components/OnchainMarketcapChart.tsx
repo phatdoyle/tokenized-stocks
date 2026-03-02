@@ -157,7 +157,7 @@ export default function OnchainMarketcapChart() {
 
             <Card noPadding>
               <div className="p-5 border-b border-subtle">
-                <h2 className="font-display text-sm font-semibold text-surface-100">All Tokens</h2>
+                <h2 className="font-display text-sm font-semibold text-surface-100">Marketcap</h2>
               </div>
               <div className="max-h-[400px] overflow-y-auto">
               <DataTable
@@ -170,18 +170,6 @@ export default function OnchainMarketcapChart() {
                     header: 'Ticker',
                     render: (item) => (
                       <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
-                    ),
-                  },
-                  {
-                    key: 'price',
-                    header: 'Price',
-                    align: 'right',
-                    render: (item) => (
-                      <span className="font-mono text-surface-100">
-                        {item.close_price != null
-                          ? `$${parseFloat(item.close_price).toLocaleString(undefined, { minimumFractionDigits: 2 })}`
-                          : '—'}
-                      </span>
                     ),
                   },
                   {
