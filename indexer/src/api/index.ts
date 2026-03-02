@@ -5,6 +5,7 @@ import { client, graphql } from "ponder";
 import { getOnchainMarketcap } from "./analytics/routes/get-onchain-marketcap/GET_ONCHAIN_MARKETCAP";
 import { getOnchainMarketcapOverTime } from "./analytics/routes/get-onchain-marketcap-over-time/GET_ONCHAIN_MARKETCAP_OVERTIME";
 import { getHolderBalances } from "./analytics/routes/get-holder-balances/GET_HOLDER_BALANCES";
+import { getTransfersMintsBurns } from "./analytics/routes/get-transfer-mints-burns/GET_TRANSFERS_MINTS_BURNS";
 
 
 const app = new Hono();
@@ -53,6 +54,22 @@ app.get("/holder-balances", async (c) => {
     return c.json({ data: rows });
   } catch (err) {
     console.error("holder-balances error:", err);
+    return c.json({ error: err instanceof Error ? err.message : "Query failed" }, 500);
+  }
+});
+
+// GET /transfers-mints-burns/:ticker - transfers, mints, burns by date for ondo + xstock (ticker required)
+app.get("/transfers-mints-burns/:ticker", async (c) => {
+  const ticker = c.req.param("ticker")?.toUpperCase();
+  if (!ticker || !/^[A-Z0-9.-]+$/.test(ticker)) {
+    return c.json({ error: "Invalid ticker symbol" }, 400);
+  }
+
+  try {
+    const rows = await getTransfersMintsBurns(ticker);
+    return c.json({ data: rows, ticker });
+  } catch (err) {
+    console.error("transfers-mints-burns error:", err);
     return c.json({ error: err instanceof Error ? err.message : "Query failed" }, 500);
   }
 });

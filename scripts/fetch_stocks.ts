@@ -71,9 +71,9 @@ async function main(): Promise<void> {
 
     const insertSql = format(`
       INSERT INTO %I.%I (
-        ticker, close_price, high, low, num_transactions,
+        id, ticker, close_price, high, low, num_transactions,
         open, bar_timestamp, volume, volume_weighted_price
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      ) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9)
     `, schema, "daily_stock_summary");
 
     let inserted = 0;

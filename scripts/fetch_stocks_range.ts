@@ -87,11 +87,23 @@ async function main(): Promise<void> {
       )
     `, schema, "daily_stock_summary"));
 
+    // Ensure id has a default (table may have been created by Ponder without SERIAL)
+    const seqName = `${schema}.daily_stock_summary_id_seq`;
+    await client.query(format("CREATE SEQUENCE IF NOT EXISTS %I.%I", schema, "daily_stock_summary_id_seq"));
+    await client.query(
+      format(
+        "ALTER TABLE %I.%I ALTER COLUMN id SET DEFAULT nextval(%L::regclass)",
+        schema,
+        "daily_stock_summary",
+        seqName
+      )
+    );
+
     const insertSql = format(`
       INSERT INTO %I.%I (
-        ticker, close_price, high, low, num_transactions,
+        id, ticker, close_price, high, low, num_transactions,
         open, bar_timestamp, volume, volume_weighted_price
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      ) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9)
     `, schema, "daily_stock_summary");
 
     let totalInserted = 0;
