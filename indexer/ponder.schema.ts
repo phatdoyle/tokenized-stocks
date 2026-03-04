@@ -1,4 +1,4 @@
-import { onchainTable } from "ponder";
+import { onchainTable, primaryKey, index } from "ponder";
 
 // Approval event: owner, spender, value
 export const approval = onchainTable("ondo_approval", (t) => ({
@@ -429,5 +429,243 @@ export const tickerReference = onchainTable("ticker_reference", (t) => ({
   brandingIconUrl: t.text(),
   brandingLogoUrl: t.text(),
   updatedAt: t.timestamp().notNull(),
+}));
+
+// asset_balances - populated by external script (e.g. Securitize/EXOD balances)
+export const assetBalances = onchainTable("asset_balances", (t) => ({
+  address: t.text().primaryKey(),
+  amount: t.real().notNull(),
+}));
+
+// =============================================================
+// Algorand Asset Indexer — Flat Table Schema
+// =============================================================
+
+// 1. algorand_assets — One row per indexed asset
+export const algorandAssets = onchainTable("algorand_assets", (t) => ({
+  assetId: t.bigint().primaryKey(),
+  createdAtRound: t.bigint(),
+  deleted: t.boolean().notNull().default(false),
+  creatorAddress: t.text(),
+  clawbackAddress: t.text(),
+  freezeAddress: t.text(),
+  managerAddress: t.text(),
+  reserveAddress: t.text(),
+  name: t.text(),
+  unitName: t.text(),
+  total: t.bigint(),
+  decimals: t.integer(),
+  defaultFrozen: t.boolean(),
+  url: t.text(),
+  metadataHash: t.text(),
+  indexedAt: t.timestamp().notNull().defaultNow(),
+}));
+
+// 2. algorand_transactions — One row per transaction (outer and inner)
+export const algorandTransactions = onchainTable(
+  "algorand_transactions",
+  (t) => ({
+    id: t.text().primaryKey(),
+    assetId: t.bigint().notNull(),
+    txType: t.text().notNull(),
+    confirmedRound: t.bigint(),
+    roundTime: t.timestamp(),
+    sender: t.text(),
+    fee: t.bigint(),
+    firstValid: t.bigint(),
+    lastValid: t.bigint(),
+    note: t.text(),
+    groupHash: t.text(),
+    genesisId: t.text(),
+    genesisHash: t.text(),
+    intraRoundOffset: t.integer(),
+    closeRewards: t.bigint(),
+    closingAmount: t.bigint(),
+    senderRewards: t.bigint(),
+    receiverRewards: t.bigint(),
+    createdAssetIndex: t.bigint(),
+    authAddr: t.text(),
+    signatureSig: t.text(),
+    parentTxId: t.text(),
+    isInnerTxn: t.boolean().notNull().default(false),
+    innerTxnIndex: t.integer(),
+  }),
+  (table) => ({
+    assetIdIdx: index().on(table.assetId),
+    confirmedRoundIdx: index().on(table.confirmedRound),
+    txTypeIdx: index().on(table.txType),
+    senderIdx: index().on(table.sender),
+    roundTimeIdx: index().on(table.roundTime),
+    parentTxIdIdx: index().on(table.parentTxId),
+  })
+);
+
+// 3. algorand_asset_transfers — tx_type = 'axfer'
+export const algorandAssetTransfers = onchainTable(
+  "algorand_asset_transfers",
+  (t) => ({
+    txId: t.text().primaryKey(),
+    amount: t.bigint(),
+    assetId: t.bigint(),
+    receiver: t.text(),
+    closeAmount: t.bigint(),
+    closeTo: t.text(),
+  }),
+  (table) => ({
+    receiverIdx: index().on(table.receiver),
+  })
+);
+
+// 4. algorand_asset_freezes — tx_type = 'afrz'
+export const algorandAssetFreezes = onchainTable(
+  "algorand_asset_freezes",
+  (t) => ({
+    txId: t.text().primaryKey(),
+    address: t.text(),
+    assetId: t.bigint(),
+    newFreezeStatus: t.boolean(),
+  }),
+  (table) => ({
+    addressIdx: index().on(table.address),
+  })
+);
+
+// 5. algorand_asset_configs — tx_type = 'acfg'
+export const algorandAssetConfigs = onchainTable("algorand_asset_configs", (t) => ({
+  txId: t.text().primaryKey(),
+  assetId: t.bigint(),
+  creatorAddress: t.text(),
+  clawbackAddress: t.text(),
+  freezeAddress: t.text(),
+  managerAddress: t.text(),
+  reserveAddress: t.text(),
+  name: t.text(),
+  unitName: t.text(),
+  total: t.bigint(),
+  decimals: t.integer(),
+  defaultFrozen: t.boolean(),
+  url: t.text(),
+  metadataHash: t.text(),
+}));
+
+// 6. algorand_application_calls — tx_type = 'appl'
+export const algorandApplicationCalls = onchainTable(
+  "algorand_application_calls",
+  (t) => ({
+    txId: t.text().primaryKey(),
+    applicationId: t.bigint(),
+    onCompletion: t.text(),
+    globalStateSchemaNumByteSlice: t.integer(),
+    globalStateSchemaNumUint: t.integer(),
+    localStateSchemaNumByteSlice: t.integer(),
+    localStateSchemaNumUint: t.integer(),
+    approvalProgram: t.text(),
+    clearStateProgram: t.text(),
+  }),
+  (table) => ({
+    applicationIdIdx: index().on(table.applicationId),
+  })
+);
+
+// 7. algorand_application_call_accounts — The 'accounts' array on appl tx
+export const algorandApplicationCallAccounts = onchainTable(
+  "algorand_application_call_accounts",
+  (t) => ({
+    txId: t.text().notNull(),
+    address: t.text().notNull(),
+    position: t.integer().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.txId, table.position] }),
+    txIdIdx: index().on(table.txId),
+    addressIdx: index().on(table.address),
+  })
+);
+
+// 8. algorand_application_call_args — The 'application-args' array (base64)
+export const algorandApplicationCallArgs = onchainTable(
+  "algorand_application_call_args",
+  (t) => ({
+    txId: t.text().notNull(),
+    argB64: t.text().notNull(),
+    position: t.integer().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.txId, table.position] }),
+    txIdIdx: index().on(table.txId),
+  })
+);
+
+// 9. algorand_application_call_foreign_apps
+export const algorandApplicationCallForeignApps = onchainTable(
+  "algorand_application_call_foreign_apps",
+  (t) => ({
+    txId: t.text().notNull(),
+    appId: t.bigint().notNull(),
+    position: t.integer().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.txId, table.position] }),
+    txIdIdx: index().on(table.txId),
+  })
+);
+
+// 10. algorand_application_call_foreign_assets
+export const algorandApplicationCallForeignAssets = onchainTable(
+  "algorand_application_call_foreign_assets",
+  (t) => ({
+    txId: t.text().notNull(),
+    assetId: t.bigint().notNull(),
+    position: t.integer().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.txId, table.position] }),
+    txIdIdx: index().on(table.txId),
+  })
+);
+
+// 11. algorand_global_state_deltas — Key/value state changes from appl tx
+export const algorandGlobalStateDeltas = onchainTable(
+  "algorand_global_state_deltas",
+  (t) => ({
+    txId: t.text().notNull(),
+    keyB64: t.text().notNull(),
+    action: t.integer(),
+    uintValue: t.bigint(),
+    bytesValue: t.text(),
+    position: t.integer().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.txId, table.position] }),
+    txIdIdx: index().on(table.txId),
+  })
+);
+
+// 12. algorand_asset_balances — Current snapshot of accounts holding asset
+export const algorandAssetBalances = onchainTable(
+  "algorand_asset_balances",
+  (t) => ({
+    assetId: t.bigint().notNull(),
+    address: t.text().notNull(),
+    amount: t.bigint(),
+    deleted: t.boolean().notNull().default(false),
+    isFrozen: t.boolean().notNull().default(false),
+    optedInAtRound: t.bigint(),
+    optedOutAtRound: t.bigint(),
+    indexedAt: t.timestamp().notNull().defaultNow(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.assetId, table.address] }),
+    addressIdx: index().on(table.address),
+    amountIdx: index().on(table.amount),
+    isFrozenIdx: index().on(table.isFrozen),
+  })
+);
+
+// 13. algorand_indexer_state — Tracks last processed round per asset
+export const algorandIndexerState = onchainTable("algorand_indexer_state", (t) => ({
+  assetId: t.bigint().primaryKey(),
+  lastProcessedRound: t.bigint().notNull(),
+  updatedAt: t.timestamp().notNull().defaultNow(),
 }));
 
