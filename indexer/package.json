@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "echo 'No build step required'",
+    "migrate:algorand": "bash scripts/run-algorand-migration.sh",
     "dev": "ponder dev",
     "start": "ponder start",
     "db": "ponder db",

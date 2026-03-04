@@ -445,7 +445,7 @@ export const assetBalances = onchainTable("asset_balances", (t) => ({
 export const algorandAssets = onchainTable("algorand_assets", (t) => ({
   assetId: t.bigint().primaryKey(),
   createdAtRound: t.bigint(),
-  deleted: t.boolean().notNull().default(false),
+  deleted: t.boolean().notNull(),
   creatorAddress: t.text(),
   clawbackAddress: t.text(),
   freezeAddress: t.text(),
@@ -458,7 +458,7 @@ export const algorandAssets = onchainTable("algorand_assets", (t) => ({
   defaultFrozen: t.boolean(),
   url: t.text(),
   metadataHash: t.text(),
-  indexedAt: t.timestamp().notNull().defaultNow(),
+  indexedAt: t.timestamp().notNull(),
 }));
 
 // 2. algorand_transactions — One row per transaction (outer and inner)
@@ -487,7 +487,7 @@ export const algorandTransactions = onchainTable(
     authAddr: t.text(),
     signatureSig: t.text(),
     parentTxId: t.text(),
-    isInnerTxn: t.boolean().notNull().default(false),
+    isInnerTxn: t.boolean().notNull(),
     innerTxnIndex: t.integer(),
   }),
   (table) => ({
@@ -648,11 +648,11 @@ export const algorandAssetBalances = onchainTable(
     assetId: t.bigint().notNull(),
     address: t.text().notNull(),
     amount: t.bigint(),
-    deleted: t.boolean().notNull().default(false),
-    isFrozen: t.boolean().notNull().default(false),
+    deleted: t.boolean().notNull(),
+    isFrozen: t.boolean().notNull(),
     optedInAtRound: t.bigint(),
     optedOutAtRound: t.bigint(),
-    indexedAt: t.timestamp().notNull().defaultNow(),
+    indexedAt: t.timestamp().notNull(),
   }),
   (table) => ({
     pk: primaryKey({ columns: [table.assetId, table.address] }),
@@ -666,6 +666,6 @@ export const algorandAssetBalances = onchainTable(
 export const algorandIndexerState = onchainTable("algorand_indexer_state", (t) => ({
   assetId: t.bigint().primaryKey(),
   lastProcessedRound: t.bigint().notNull(),
-  updatedAt: t.timestamp().notNull().defaultNow(),
+  updatedAt: t.timestamp().notNull(),
 }));
 
