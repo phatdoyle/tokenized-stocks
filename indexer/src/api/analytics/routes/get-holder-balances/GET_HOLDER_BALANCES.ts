@@ -151,6 +151,7 @@ exod_balances AS (
     'securitize' AS protocol
   FROM algorand_asset_balances
   WHERE amount > 0
+  and address != 'MAKF3GL52O5O6ENRRLJSEJRLTR74E323JBZIWMMGLZT5PNZ4NDTEEODN7A'
 ),
 final_data AS (
   SELECT

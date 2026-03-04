@@ -40,6 +40,10 @@ const QUERY = `
     LEFT JOIN xstocks_tickers b ON a.contract_address = b.contract_address
     WHERE a."to" = '0x0000000000000000000000000000000000000000'
     GROUP BY 1, 2, 3
+    UNION ALL
+    SELECT 'EXOD' as stock_ticker, '213345970' as contract_address, 'securitized' as protocol, sum(amount / power(10,8)) as amount
+    FROM asset_balances
+    WHERE amount > 0 AND address != 'MAKF3GL52O5O6ENRRLJSEJRLTR74E323JBZIWMMGLZT5PNZ4NDTEEODN7A'
   ),
   final_prep AS (
     SELECT stock_ticker, protocol, sum(amount) AS onchain_supply
