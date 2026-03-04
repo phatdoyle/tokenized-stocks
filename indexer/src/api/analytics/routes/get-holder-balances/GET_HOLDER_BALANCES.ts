@@ -73,7 +73,7 @@ WITH prices AS (
     (a.close_price * b.share_class_shares_outstanding) AS total_marketcap
   FROM daily_stock_summary a
   LEFT JOIN ticker_reference b ON a.ticker = b.ticker
-  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM stocks.daily_stock_summary)
+  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary)
     AND share_class_shares_outstanding IS NOT NULL
 ),
 xstocks_tickers AS (
