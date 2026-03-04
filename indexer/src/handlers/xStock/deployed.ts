@@ -6,7 +6,8 @@ ponder.on("xStockFactory:NewToken", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockDeployed).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     newToken: args.newToken,
     name: args.name,
     symbol: args.symbol,

@@ -6,7 +6,8 @@ ponder.on("xStock:PauseModeChange", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockPauseModeChange).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     pauseMode: args.pauseMode,
     blockNumber: block.number,

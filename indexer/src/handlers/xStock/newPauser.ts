@@ -6,7 +6,8 @@ ponder.on("xStock:NewPauser", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockNewPauser).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     newPauser: args.newPauser,
     blockNumber: block.number,

@@ -6,7 +6,8 @@ ponder.on("xStock:DelegateModeChange", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockDelegateModeChange).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     delegateMode: args.delegateMode,
     blockNumber: block.number,

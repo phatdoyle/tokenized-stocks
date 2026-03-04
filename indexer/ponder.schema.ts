@@ -3,6 +3,7 @@ import { onchainTable } from "ponder";
 // Approval event: owner, spender, value
 export const approval = onchainTable("ondo_approval", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -19,6 +20,7 @@ export const approval = onchainTable("ondo_approval", (t) => ({
 // ComplianceSet event: oldCompliance, newCompliance
 export const complianceSet = onchainTable("ondo_complianceSet", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -34,6 +36,7 @@ export const complianceSet = onchainTable("ondo_complianceSet", (t) => ({
 // Initialized event: version
 export const initialized = onchainTable("ondo_initialized", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -48,6 +51,7 @@ export const initialized = onchainTable("ondo_initialized", (t) => ({
 // NameChanged event: oldName, newName
 export const nameChanged = onchainTable("ondo_nameChanged", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -63,6 +67,7 @@ export const nameChanged = onchainTable("ondo_nameChanged", (t) => ({
 // RoleAdminChanged event: role, previousAdminRole, newAdminRole
 export const roleAdminChanged = onchainTable("ondo_roleAdminChanged", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -79,6 +84,7 @@ export const roleAdminChanged = onchainTable("ondo_roleAdminChanged", (t) => ({
 // RoleGranted event: role, account, sender
 export const roleGranted = onchainTable("ondo_roleGranted", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -95,6 +101,7 @@ export const roleGranted = onchainTable("ondo_roleGranted", (t) => ({
 // RoleRevoked event: role, account, sender
 export const roleRevoked = onchainTable("ondo_roleRevoked", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -111,6 +118,7 @@ export const roleRevoked = onchainTable("ondo_roleRevoked", (t) => ({
 // SymbolChanged event: oldSymbol, newSymbol
 export const symbolChanged = onchainTable("ondo_symbolChanged", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -126,6 +134,7 @@ export const symbolChanged = onchainTable("ondo_symbolChanged", (t) => ({
 // TokenPauseManagerSet event: oldTokenPauseManager, newTokenPauseManager
 export const tokenPauseManagerSet = onchainTable("ondo_tokenPauseManagerSet", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   contractAddress: t.hex(),
   tokenType: t.text(),
@@ -141,6 +150,7 @@ export const tokenPauseManagerSet = onchainTable("ondo_tokenPauseManagerSet", (t
 // Transfer event: from, to, value
 export const transfer = onchainTable("ondo_transfer", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   tokenName: t.text(),
   ticker: t.text(),
   stockTicker: t.text(),
@@ -159,6 +169,7 @@ export const transfer = onchainTable("ondo_transfer", (t) => ({
 // NewGMTokenDeployed event: proxy, beacon, name, ticker, compliance, tokenPauseManager
 export const tokenDeployed = onchainTable("ondo_tokenDeployed", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   proxy: t.hex(),
   beacon: t.hex(),
   name: t.text(),
@@ -185,6 +196,7 @@ export const anotherFactoryDeployed = onchainTable("another_factory_deployed", (
 // xStock Factory NewToken event: newToken, name, symbol
 export const xStockDeployed = onchainTable("xstock_deployed", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   newToken: t.hex(),
   name: t.text(),
   symbol: t.text(),
@@ -197,6 +209,7 @@ export const xStockDeployed = onchainTable("xstock_deployed", (t) => ({
 // xStock Approval event: owner, spender, value
 export const xStockApproval = onchainTable("xstock_approval", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   owner: t.hex(),
   spender: t.hex(),
@@ -210,6 +223,7 @@ export const xStockApproval = onchainTable("xstock_approval", (t) => ({
 // xStock DelegateModeChange event: delegateMode
 export const xStockDelegateModeChange = onchainTable("xstock_delegateModeChange", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   delegateMode: t.boolean(),
   blockNumber: t.bigint(),
@@ -221,6 +235,7 @@ export const xStockDelegateModeChange = onchainTable("xstock_delegateModeChange"
 // xStock DelegateWhitelistChange event: whitelistAddress, status
 export const xStockDelegateWhitelistChange = onchainTable("xstock_delegateWhitelistChange", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   whitelistAddress: t.hex(),
   status: t.boolean(),
@@ -233,6 +248,7 @@ export const xStockDelegateWhitelistChange = onchainTable("xstock_delegateWhitel
 // xStock MultiplierUpdated event: value
 export const xStockMultiplierUpdated = onchainTable("xstock_multiplierUpdated", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   value: t.bigint(),
   blockNumber: t.bigint(),
@@ -244,6 +260,7 @@ export const xStockMultiplierUpdated = onchainTable("xstock_multiplierUpdated", 
 // xStock NewBurner event: newBurner
 export const xStockNewBurner = onchainTable("xstock_newBurner", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newBurner: t.hex(),
   blockNumber: t.bigint(),
@@ -255,6 +272,7 @@ export const xStockNewBurner = onchainTable("xstock_newBurner", (t) => ({
 // xStock NewMinter event: newMinter
 export const xStockNewMinter = onchainTable("xstock_newMinter", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newMinter: t.hex(),
   blockNumber: t.bigint(),
@@ -266,6 +284,7 @@ export const xStockNewMinter = onchainTable("xstock_newMinter", (t) => ({
 // xStock NewMultiplierUpdater event: newMultiplierUpdater
 export const xStockNewMultiplierUpdater = onchainTable("xstock_newMultiplierUpdater", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newMultiplierUpdater: t.hex(),
   blockNumber: t.bigint(),
@@ -277,6 +296,7 @@ export const xStockNewMultiplierUpdater = onchainTable("xstock_newMultiplierUpda
 // xStock NewPauser event: newPauser
 export const xStockNewPauser = onchainTable("xstock_newPauser", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newPauser: t.hex(),
   blockNumber: t.bigint(),
@@ -288,6 +308,7 @@ export const xStockNewPauser = onchainTable("xstock_newPauser", (t) => ({
 // xStock NewSanctionsList event: newSanctionsList
 export const xStockNewSanctionsList = onchainTable("xstock_newSanctionsList", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newSanctionsList: t.hex(),
   blockNumber: t.bigint(),
@@ -299,6 +320,7 @@ export const xStockNewSanctionsList = onchainTable("xstock_newSanctionsList", (t
 // xStock NewTerms event: newTerms
 export const xStockNewTerms = onchainTable("xstock_newTerms", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   newTerms: t.text(),
   blockNumber: t.bigint(),
@@ -310,6 +332,7 @@ export const xStockNewTerms = onchainTable("xstock_newTerms", (t) => ({
 // xStock OwnershipTransferred event: previousOwner, newOwner
 export const xStockOwnershipTransferred = onchainTable("xstock_ownershipTransferred", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   previousOwner: t.hex(),
   newOwner: t.hex(),
@@ -322,6 +345,7 @@ export const xStockOwnershipTransferred = onchainTable("xstock_ownershipTransfer
 // xStock PauseModeChange event: pauseMode
 export const xStockPauseModeChange = onchainTable("xstock_pauseModeChange", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   pauseMode: t.boolean(),
   blockNumber: t.bigint(),
@@ -333,6 +357,7 @@ export const xStockPauseModeChange = onchainTable("xstock_pauseModeChange", (t) 
 // xStock Transfer event: from, to, value
 export const xStockTransfer = onchainTable("xstock_transfer", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   from: t.hex(),
   to: t.hex(),
@@ -346,6 +371,7 @@ export const xStockTransfer = onchainTable("xstock_transfer", (t) => ({
 // xStock TransferShares event: from, to, value
 export const xStockTransferShares = onchainTable("xstock_transferShares", (t) => ({
   id: t.text().primaryKey(),
+  network: t.text(),
   contractAddress: t.hex(),
   from: t.hex(),
   to: t.hex(),

@@ -6,7 +6,8 @@ ponder.on("xStock:Transfer", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockTransfer).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     from: args.from,
     to: args.to,

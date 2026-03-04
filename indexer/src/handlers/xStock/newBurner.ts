@@ -6,7 +6,8 @@ ponder.on("xStock:NewBurner", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockNewBurner).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     newBurner: args.newBurner,
     blockNumber: block.number,

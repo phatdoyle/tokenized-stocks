@@ -6,7 +6,8 @@ ponder.on("xStock:NewMultiplierUpdater", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockNewMultiplierUpdater).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     newMultiplierUpdater: args.newMultiplierUpdater,
     blockNumber: block.number,

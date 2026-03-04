@@ -13,10 +13,13 @@ function normalizeAddress(addr: string): string | null {
   return "0x" + hex.toLowerCase();
 }
 
-/** Validate protocol is 'ondo' or 'xstock'. */
-function validateProtocol(p: string): "ondo" | "xstock" | null {
+/** Validate protocol is 'ondo', 'xstock', or 'securitize'. */
+function validateProtocol(
+  p: string
+): "ondo" | "xstock" | "securitize" | null {
   const lower = p.toLowerCase();
-  if (lower === "ondo" || lower === "xstock") return lower;
+  if (lower === "ondo" || lower === "xstock" || lower === "securitize")
+    return lower;
   return null;
 }
 
@@ -38,7 +41,7 @@ export interface HolderBalanceRow {
 export interface GetHolderBalancesParams {
   ticker?: string;
   address?: string;
-  protocol?: "ondo" | "xstock";
+  protocol?: "ondo" | "xstock" | "securitize";
 }
 
 function buildQuery(params: GetHolderBalancesParams): string {
@@ -53,8 +56,9 @@ function buildQuery(params: GetHolderBalancesParams): string {
       conditions.push(`address = ${escapeLiteral(norm)}`);
     }
   }
-  if (params.protocol && validateProtocol(params.protocol)) {
-    conditions.push(`protocol = ${escapeLiteral(params.protocol)}`);
+  const proto = params.protocol ? validateProtocol(params.protocol) : null;
+  if (proto) {
+    conditions.push(`protocol = ${escapeLiteral(proto)}`);
   }
 
   const whereClause =
@@ -69,7 +73,7 @@ WITH prices AS (
     (a.close_price * b.share_class_shares_outstanding) AS total_marketcap
   FROM daily_stock_summary a
   LEFT JOIN ticker_reference b ON a.ticker = b.ticker
-  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary)
+  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM stocks.daily_stock_summary)
     AND share_class_shares_outstanding IS NOT NULL
 ),
 xstocks_tickers AS (
@@ -128,6 +132,26 @@ xstock_balances AS (
     AND address != '0x5f7a4c11bde4f218f0025ef444c369d838ffa2ad'
   GROUP BY 1, 2, 3, 4
 ),
+exod_prices AS (
+  SELECT
+    a.*,
+    to_timestamp(bar_timestamp / 1000.0)::date
+  FROM public.daily_stock_summary a
+  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM public.daily_stock_summary WHERE ticker = 'EXOD')
+    AND ticker = 'EXOD'
+),
+exod_balances AS (
+  SELECT
+    address,
+    'EXOD' AS ticker,
+    '213345970' AS contract_address,
+    (SELECT close_price FROM exod_prices) AS close_price,
+    amount / power(10, 8) AS balance,
+    (amount / power(10, 8)) * (SELECT close_price FROM exod_prices) AS usd_balance,
+    'securitize' AS protocol
+  FROM public.asset_balances
+  WHERE amount > 0
+),
 final_data AS (
   SELECT
     a.*,
@@ -142,6 +166,9 @@ final_data AS (
     'xstock' AS protocol
   FROM xstock_balances a
   WHERE balance > 1
+  UNION ALL
+  SELECT *
+  FROM exod_balances
 )
 SELECT * FROM final_data
 ${whereClause}

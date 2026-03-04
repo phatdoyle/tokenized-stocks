@@ -6,7 +6,8 @@ ponder.on("xStock:DelegateWhitelistChange", async ({ event, context }) => {
   const { args, block, transaction, log } = event;
 
   await db.insert(schema.xStockDelegateWhitelistChange).values({
-    id: `${transaction.hash}-${log.logIndex}`,
+    id: `${context.chain.name}-${transaction.hash}-${log.logIndex}`,
+    network: context.chain.name,
     contractAddress: log.address,
     whitelistAddress: args.whitelistAddress,
     status: args.status,
