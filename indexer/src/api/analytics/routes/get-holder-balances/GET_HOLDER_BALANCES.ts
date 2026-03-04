@@ -136,8 +136,8 @@ exod_prices AS (
   SELECT
     a.*,
     to_timestamp(bar_timestamp / 1000.0)::date
-  FROM stocks.daily_stock_summary a
-  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM stocks.daily_stock_summary WHERE ticker = 'EXOD')
+  FROM daily_stock_summary a
+  WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary WHERE ticker = 'EXOD')
     AND ticker = 'EXOD'
 ),
 exod_balances AS (
@@ -149,7 +149,7 @@ exod_balances AS (
     amount / power(10, 8) AS balance,
     (amount / power(10, 8)) * (SELECT close_price FROM exod_prices) AS usd_balance,
     'securitize' AS protocol
-  FROM stocks.asset_balances
+  FROM algorand_asset_balances
   WHERE amount > 0
 ),
 final_data AS (
