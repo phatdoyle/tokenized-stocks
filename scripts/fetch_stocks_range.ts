@@ -52,7 +52,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const schema = process.env.DATABASE_SCHEMA ?? "stock";
+  const schema = process.env.DATABASE_SCHEMA ?? "public";
   const startDateArg = process.argv[2] ?? "2025-09-10";
   const endDateArg = process.argv[3];
   const endDate =

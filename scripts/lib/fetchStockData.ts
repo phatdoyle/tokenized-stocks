@@ -8,7 +8,8 @@ const BASE_URL =
 
 const MAX_RETRIES = 5;
 const BASE_DELAY_MS = 1000;
-const REQUEST_TIMEOUT_MS = 30000;
+/** Request timeout (ms). Override via FETCH_TIMEOUT_MS env. Aggregates can be slow. */
+const REQUEST_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS) || 90_000;
 
 export interface ApiResult {
   T: string;
@@ -84,9 +85,10 @@ export async function fetchStockData(
       throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
-      // Retry on timeout (AbortError), network errors, or server/rate-limit errors
+      // Retry on timeout (AbortError/TimeoutError), network errors, or server/rate-limit errors
       const isRetryable =
         lastError.name === "AbortError" ||
+        lastError.name === "TimeoutError" ||
         lastError.message.startsWith("HTTP 429") ||
         lastError.message.startsWith("HTTP 5") ||
         lastError.message.includes("fetch") ||

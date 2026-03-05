@@ -69,27 +69,35 @@ async function main(): Promise<void> {
       )
     `, schema, "daily_stock_summary"));
 
-    const insertSql = format(`
-      INSERT INTO %I.%I (
-        id, ticker, close_price, high, low, num_transactions,
-        open, bar_timestamp, volume, volume_weighted_price
-      ) VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8, $9)
-    `, schema, "daily_stock_summary");
-
+    const BATCH_SIZE = 500;
     let inserted = 0;
-    for (const row of rows) {
-      await client.query(insertSql, [
-        row.ticker,
-        row.close_price,
-        row.high,
-        row.low,
-        row.num_transactions,
-        row.open,
-        row.timestamp,
-        row.volume,
-        row.volume_weighted_price,
+    for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+      const batch = rows.slice(i, i + BATCH_SIZE);
+      const values = batch.map((r) => [
+        r.ticker ?? null,
+        r.close_price ?? null,
+        r.high ?? null,
+        r.low ?? null,
+        r.num_transactions ?? null,
+        r.open ?? null,
+        r.timestamp ?? null,
+        r.volume ?? null,
+        r.volume_weighted_price ?? null,
       ]);
-      inserted++;
+      const valueClauses = values.map(
+        (v) => format("(DEFAULT, %L, %L, %L, %L, %L, %L, %L, %L, %L)", ...v)
+      );
+      const insertSql = format(
+        `INSERT INTO %I.%I (id, ticker, close_price, high, low, num_transactions, open, bar_timestamp, volume, volume_weighted_price) VALUES %s`,
+        schema,
+        "daily_stock_summary",
+        valueClauses.join(", ")
+      );
+      await client.query(insertSql);
+      inserted += batch.length;
+      if (rows.length > BATCH_SIZE) {
+        console.log(`  Inserted ${inserted}/${rows.length}...`);
+      }
     }
 
     console.log(`Inserted ${inserted} records into ${schema}.daily_stock_summary.`);
