@@ -38,12 +38,19 @@ export default function OnchainMarketcapChart() {
   );
 
   const [selectedTicker, setSelectedTicker] = useState<string>('');
+  const [groupByNetwork, setGroupByNetwork] = useState(false);
+  const [sortKey, setSortKey] = useState<string | null>('total');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   useEffect(() => {
     if (symbols.length > 0 && !symbols.includes(selectedTicker)) {
       setSelectedTicker(symbols[0]!);
     }
   }, [symbols, selectedTicker]);
+
+  useEffect(() => {
+    setSortKey('total');
+  }, [groupByNetwork]);
 
   const effectiveTicker = symbols.includes(selectedTicker) ? selectedTicker : symbols[0];
 
@@ -54,7 +61,7 @@ export default function OnchainMarketcapChart() {
   const groupedTableData = useMemo(() => {
     const map = new Map<
       string,
-      { stock_ticker: string; close_price: string | null; ondo_marketcap: number; xstock_marketcap: number; total_marketcap: number }
+      { stock_ticker: string; close_price: string | null; ondo_marketcap: number; xstock_marketcap: number; securitize_marketcap: number; total_marketcap: number }
     >();
     for (const item of rawData) {
       const ticker = item.stock_ticker;
@@ -67,12 +74,47 @@ export default function OnchainMarketcapChart() {
           close_price: item.close_price,
           ondo_marketcap: item.protocol === 'ondo' ? mcap : 0,
           xstock_marketcap: item.protocol === 'xstock' ? mcap : 0,
+          securitize_marketcap: item.protocol === 'securitized' ? mcap : 0,
           total_marketcap: mcap,
         });
       } else {
-        if (item.protocol === 'ondo') existing.ondo_marketcap = mcap;
-        else if (item.protocol === 'xstock') existing.xstock_marketcap = mcap;
-        existing.total_marketcap = existing.ondo_marketcap + existing.xstock_marketcap;
+        if (item.protocol === 'ondo') existing.ondo_marketcap += mcap;
+        else if (item.protocol === 'xstock') existing.xstock_marketcap += mcap;
+        else if (item.protocol === 'securitized') existing.securitize_marketcap += mcap;
+        existing.total_marketcap = existing.ondo_marketcap + existing.xstock_marketcap + existing.securitize_marketcap;
+      }
+    }
+    return Array.from(map.values()).sort((a, b) => b.total_marketcap - a.total_marketcap);
+  }, [rawData]);
+
+  const networks = useMemo(() => {
+    const set = new Set<string>();
+    for (const item of rawData) {
+      const n = item.network ?? 'unknown';
+      if (n) set.add(n);
+    }
+    return [...set].sort();
+  }, [rawData]);
+
+  const groupedByNetworkTableData = useMemo(() => {
+    type Row = { stock_ticker: string; networks: Record<string, number>; total_marketcap: number };
+    const map = new Map<string, Row>();
+    for (const item of rawData) {
+      const ticker = item.stock_ticker;
+      const network = item.network ?? 'unknown';
+      if (!ticker || EXCLUDED_TICKERS.includes(ticker)) continue;
+      const mcap = item.onchain_marketcap ? parseFloat(item.onchain_marketcap) : 0;
+      const existing = map.get(ticker);
+      if (!existing) {
+        const networks: Record<string, number> = { [network]: mcap };
+        map.set(ticker, {
+          stock_ticker: ticker,
+          networks,
+          total_marketcap: mcap,
+        });
+      } else {
+        existing.networks[network] = (existing.networks[network] ?? 0) + mcap;
+        existing.total_marketcap += mcap;
       }
     }
     return Array.from(map.values()).sort((a, b) => b.total_marketcap - a.total_marketcap);
@@ -98,6 +140,12 @@ export default function OnchainMarketcapChart() {
             fill: tickerColor,
             stock_ticker: item.stock_ticker,
           },
+          item.securitize_marketcap > 0 && {
+            name: 'Securitize',
+            value: item.securitize_marketcap,
+            fill: tickerColor,
+            stock_ticker: item.stock_ticker,
+          },
         ].filter(Boolean) as { name: string; value: number; fill: string; stock_ticker: string }[];
         return {
           name: item.stock_ticker,
@@ -120,6 +168,48 @@ export default function OnchainMarketcapChart() {
   })) ?? [];
 
   const tickerOptions = [...symbols].sort().map((s) => ({ value: s, label: s }));
+
+  type ProtocolRow = { stock_ticker: string; ondo_marketcap: number; xstock_marketcap: number; securitize_marketcap: number; total_marketcap: number };
+  type NetworkRow = { stock_ticker: string; networks: Record<string, number>; total_marketcap: number };
+  const tableData = groupByNetwork ? groupedByNetworkTableData : groupedTableData;
+  const sortedTableData = useMemo(() => {
+    if (!sortKey) return tableData;
+    if (groupByNetwork) {
+      const rows = tableData as NetworkRow[];
+      const getSortValue = (r: NetworkRow) =>
+        sortKey === 'ticker' ? r.stock_ticker : sortKey === 'total' ? r.total_marketcap : (r.networks[sortKey] ?? 0);
+      return [...rows].sort((a, b) => {
+        const va = getSortValue(a);
+        const vb = getSortValue(b);
+        const cmp = typeof va === 'number' && typeof vb === 'number' ? va - vb : String(va).localeCompare(String(vb));
+        return sortDirection === 'asc' ? cmp : -cmp;
+      });
+    }
+    const rows = tableData as ProtocolRow[];
+    const col = [
+      { key: 'ticker', sortValue: (r: ProtocolRow) => r.stock_ticker },
+      { key: 'ondo', sortValue: (r: ProtocolRow) => r.ondo_marketcap },
+      { key: 'xstock', sortValue: (r: ProtocolRow) => r.xstock_marketcap },
+      { key: 'securitize', sortValue: (r: ProtocolRow) => r.securitize_marketcap },
+      { key: 'total', sortValue: (r: ProtocolRow) => r.total_marketcap },
+    ].find((c) => c.key === sortKey);
+    if (!col) return tableData;
+    return [...rows].sort((a, b) => {
+      const va = col.sortValue(a);
+      const vb = col.sortValue(b);
+      const cmp = typeof va === 'number' && typeof vb === 'number' ? va - vb : String(va).localeCompare(String(vb));
+      return sortDirection === 'asc' ? cmp : -cmp;
+    });
+  }, [tableData, sortKey, sortDirection, groupByNetwork]);
+
+  const handleSort = (key: string) => {
+    if (sortKey === key) {
+      setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortKey(key);
+      setSortDirection('desc');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -153,53 +243,123 @@ export default function OnchainMarketcapChart() {
             </Card>
 
             <Card noPadding>
-              <div className="p-5 border-b border-subtle">
+              <div className="p-5 border-b border-subtle flex items-center justify-between gap-4">
                 <h2 className="font-display text-sm font-semibold text-surface-100">Marketcap</h2>
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={groupByNetwork}
+                    onChange={(e) => setGroupByNetwork(e.target.checked)}
+                    className="rounded border-subtle bg-surface-700 text-accent focus:ring-accent/50"
+                  />
+                  <span className="text-xs font-medium text-secondary">Group by network</span>
+                </label>
               </div>
               <div className="max-h-[400px] overflow-y-auto">
               <DataTable
-                data={groupedTableData}
+                data={sortedTableData}
                 rowKey={(item) => item.stock_ticker}
                 onRowClick={(item) => navigate(`/ticker/${item.stock_ticker}`)}
-                columns={[
-                  {
-                    key: 'ticker',
-                    header: 'Ticker',
-                    render: (item) => (
-                      <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
-                    ),
-                  },
-                  {
-                    key: 'ondo',
-                    header: 'Ondo',
-                    align: 'right',
-                    render: (item) => (
-                      <span className="font-mono text-surface-200">
-                        {item.ondo_marketcap > 0 ? fmtMktcap(item.ondo_marketcap) : '—'}
-                      </span>
-                    ),
-                  },
-                  {
-                    key: 'xstock',
-                    header: 'Xstock',
-                    align: 'right',
-                    render: (item) => (
-                      <span className="font-mono text-surface-200">
-                        {item.xstock_marketcap > 0 ? fmtMktcap(item.xstock_marketcap) : '—'}
-                      </span>
-                    ),
-                  },
-                  {
-                    key: 'total',
-                    header: 'Total',
-                    align: 'right',
-                    render: (item) => (
-                      <span className="font-mono text-surface-100 font-medium">
-                        {fmtMktcap(item.total_marketcap)}
-                      </span>
-                    ),
-                  },
-                ]}
+                sortKey={sortKey}
+                sortDirection={sortDirection}
+                onSort={handleSort}
+                columns={
+                  groupByNetwork
+                    ? [
+                        {
+                          key: 'ticker',
+                          header: 'Ticker',
+                          sortable: true,
+                          sortValue: (item: NetworkRow) => item.stock_ticker,
+                          render: (item: NetworkRow) => (
+                            <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
+                          ),
+                        },
+                        ...networks.map((net) => ({
+                          key: net,
+                          header: net.charAt(0).toUpperCase() + net.slice(1),
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: NetworkRow) => item.networks[net] ?? 0,
+                          render: (item: NetworkRow) => (
+                            <span className="font-mono text-surface-200">
+                              {(item.networks[net] ?? 0) > 0 ? fmtMktcap(item.networks[net]!) : '—'}
+                            </span>
+                          ),
+                        })),
+                        {
+                          key: 'total',
+                          header: 'Total',
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: NetworkRow) => item.total_marketcap,
+                          render: (item: NetworkRow) => (
+                            <span className="font-mono text-surface-100 font-medium">
+                              {fmtMktcap(item.total_marketcap)}
+                            </span>
+                          ),
+                        },
+                      ]
+                    : [
+                        {
+                          key: 'ticker',
+                          header: 'Ticker',
+                          sortable: true,
+                          sortValue: (item: ProtocolRow) => item.stock_ticker,
+                          render: (item: ProtocolRow) => (
+                            <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
+                          ),
+                        },
+                        {
+                          key: 'ondo',
+                          header: 'Ondo',
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: ProtocolRow) => item.ondo_marketcap,
+                          render: (item: ProtocolRow) => (
+                            <span className="font-mono text-surface-200">
+                              {item.ondo_marketcap > 0 ? fmtMktcap(item.ondo_marketcap) : '—'}
+                            </span>
+                          ),
+                        },
+                        {
+                          key: 'xstock',
+                          header: 'Xstock',
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: ProtocolRow) => item.xstock_marketcap,
+                          render: (item: ProtocolRow) => (
+                            <span className="font-mono text-surface-200">
+                              {item.xstock_marketcap > 0 ? fmtMktcap(item.xstock_marketcap) : '—'}
+                            </span>
+                          ),
+                        },
+                        {
+                          key: 'securitize',
+                          header: 'Securitize',
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: ProtocolRow) => item.securitize_marketcap,
+                          render: (item: ProtocolRow) => (
+                            <span className="font-mono text-surface-200">
+                              {item.securitize_marketcap > 0 ? fmtMktcap(item.securitize_marketcap) : '—'}
+                            </span>
+                          ),
+                        },
+                        {
+                          key: 'total',
+                          header: 'Total',
+                          align: 'right' as const,
+                          sortable: true,
+                          sortValue: (item: ProtocolRow) => item.total_marketcap,
+                          render: (item: ProtocolRow) => (
+                            <span className="font-mono text-surface-100 font-medium">
+                              {fmtMktcap(item.total_marketcap)}
+                            </span>
+                          ),
+                        },
+                      ]
+                }
               />
               </div>
             </Card>

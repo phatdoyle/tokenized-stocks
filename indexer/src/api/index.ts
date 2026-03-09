@@ -32,7 +32,7 @@ app.get("/onchain-marketcap", async (c) => {
 app.get("/holder-balances", async (c) => {
   const ticker = c.req.query("ticker");
   const address = c.req.query("address");
-  const protocol = c.req.query("protocol") as "ondo" | "xstock" | undefined;
+  const protocol = c.req.query("protocol") as "ondo" | "xstock" | "securitize" | undefined;
 
   if (ticker && !/^[A-Z0-9.-]+$/i.test(ticker)) {
     return c.json({ error: "Invalid ticker symbol" }, 400);
@@ -41,8 +41,8 @@ app.get("/holder-balances", async (c) => {
   if (addr && !/^0x[0-9a-fA-F]{40}$/.test(addr) && !/^[0-9a-fA-F]{40}$/.test(addr)) {
     return c.json({ error: "Invalid address" }, 400);
   }
-  if (protocol && protocol !== "ondo" && protocol !== "xstock") {
-    return c.json({ error: "Invalid protocol; use 'ondo' or 'xstock'" }, 400);
+  if (protocol && protocol !== "ondo" && protocol !== "xstock" && protocol !== "securitize") {
+    return c.json({ error: "Invalid protocol; use 'ondo' or 'xstock' or 'securitize'" }, 400);
   }
 
   try {

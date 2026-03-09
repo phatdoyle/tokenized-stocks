@@ -107,6 +107,7 @@ export interface GlobalStats {
 export interface OnchainMarketcapItem {
   stock_ticker: string;
   protocol: string;
+  network: string;
   onchain_supply: string | null;
   close_price: string | null;
   total_marketcap: string | null;

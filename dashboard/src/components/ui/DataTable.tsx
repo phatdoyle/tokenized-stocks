@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { cn } from '../../lib/cn';
 
-interface Column<T> {
+export interface Column<T> {
   key: string;
   header: string;
   align?: 'left' | 'right' | 'center';
   render: (item: T, index: number) => ReactNode;
+  sortable?: boolean;
+  sortValue?: (item: T) => string | number;
 }
 
 interface DataTableProps<T> {
@@ -13,7 +15,25 @@ interface DataTableProps<T> {
   data: T[];
   onRowClick?: (item: T) => void;
   rowKey: (item: T, index: number) => string;
+  sortKey?: string | null;
+  sortDirection?: 'asc' | 'desc';
+  onSort?: (key: string) => void;
   className?: string;
+}
+
+function SortIcon({ direction }: { direction: 'asc' | 'desc' | null }) {
+  if (!direction) {
+    return (
+      <span className="inline-block ml-1 opacity-40" aria-hidden>
+        ↕
+      </span>
+    );
+  }
+  return (
+    <span className="inline-block ml-1" aria-hidden>
+      {direction === 'asc' ? '↑' : '↓'}
+    </span>
+  );
 }
 
 /**
@@ -24,6 +44,9 @@ export function DataTable<T>({
   data,
   onRowClick,
   rowKey,
+  sortKey = null,
+  sortDirection = 'desc',
+  onSort,
   className,
 }: DataTableProps<T>) {
   return (
@@ -39,9 +62,12 @@ export function DataTable<T>({
                   col.align === 'right' && 'text-right',
                   col.align === 'center' && 'text-center',
                   col.align !== 'right' && col.align !== 'center' && 'text-left',
+                  col.sortable && onSort && 'cursor-pointer select-none hover:text-surface-100 transition-colors',
                 )}
+                onClick={col.sortable && onSort ? () => onSort(col.key) : undefined}
               >
                 {col.header}
+                {col.sortable && <SortIcon direction={sortKey === col.key ? sortDirection : null} />}
               </th>
             ))}
           </tr>
