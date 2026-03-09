@@ -39,23 +39,27 @@ function buildQuery(ticker: string): string {
       GROUP BY 1, 2, 3, 4
       UNION ALL
       SELECT
-        to_timestamp(block_timestamp)::date AS date,
-        stock_ticker,
-        contract_address,
-        network,
-        -sum(value / power(10, 18)) AS amount
-      FROM xstock_transfer
+       to_timestamp(block_timestamp)::date AS date,
+        LEFT(b.symbol, LENGTH(b.symbol) - 1) as stock_ticker,
+        a.contract_address,
+        a.network,
+        sum(a.value / power(10, 18)) AS amount
+      FROM xstock_transfer a
+      left join xstock_deployed b
+      on a.contract_address = b.new_token
       WHERE "to" = '0x0000000000000000000000000000000000000000'
         AND stock_ticker = ${t}
       GROUP BY 1, 2, 3, 4
       UNION ALL
       SELECT
-        to_timestamp(block_timestamp)::date AS date,
-        stock_ticker,
-        contract_address,
-        network,
-        sum(value / power(10, 18)) AS amount
-      FROM xstock_transfer
+        to_timestamp(a.block_timestamp)::date AS date,
+        LEFT(b.symbol, LENGTH(b.symbol) - 1) as stock_ticker,
+        a.contract_address,
+        a.network,
+        sum(a.value / power(10, 18)) AS amount
+      FROM xstock_transfer a
+      left join xstock_deployed b
+      on a.contract_address = b.new_token
       WHERE "from" = '0x0000000000000000000000000000000000000000'
         AND stock_ticker = ${t}
       GROUP BY 1, 2, 3, 4
