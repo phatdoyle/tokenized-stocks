@@ -39,7 +39,7 @@ function buildQuery(ticker: string): string {
       GROUP BY 1, 2, 3, 4
       UNION ALL
       SELECT
-       to_timestamp(block_timestamp)::date AS date,
+       to_timestamp(a.block_timestamp)::date AS date,
         LEFT(b.symbol, LENGTH(b.symbol) - 1) as stock_ticker,
         a.contract_address,
         a.network,
