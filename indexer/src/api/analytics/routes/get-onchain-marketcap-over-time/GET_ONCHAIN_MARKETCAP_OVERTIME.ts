@@ -38,7 +38,6 @@ function buildQuery(ticker: string): string {
         AND stock_ticker = ${t}
       GROUP BY 1, 2, 3, 4
       UNION ALL
-       UNION ALL
       SELECT
         to_timestamp(block_timestamp)::date AS date,
         stock_ticker,
@@ -50,7 +49,6 @@ function buildQuery(ticker: string): string {
         AND stock_ticker = ${t}
       GROUP BY 1, 2, 3, 4
       UNION ALL
-       UNION ALL
       SELECT
         to_timestamp(block_timestamp)::date AS date,
         stock_ticker,
@@ -140,6 +138,7 @@ export interface OnchainMarketcapOverTimeRow {
   date: string;
   stock_ticker: string;
   contract_address: string;
+  network: string;
   total_supply: string | null;
   close_price: string | null;
   volume: string | null;
@@ -155,6 +154,7 @@ export async function getOnchainMarketcapOverTime(
     date: r.date as string,
     stock_ticker: r.stock_ticker as string,
     contract_address: r.contract_address as string,
+    network: r.network as string,
     total_supply: r.total_supply != null ? String(r.total_supply) : null,
     close_price: r.close_price != null ? String(r.close_price) : null,
     volume: r.volume != null ? String(r.volume) : null,

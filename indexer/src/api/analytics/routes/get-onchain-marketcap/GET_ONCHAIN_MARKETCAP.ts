@@ -22,40 +22,51 @@ const QUERY = `
     FROM xstock_deployed
   ),
   total_supply AS (
-    SELECT stock_ticker, contract_address, 'ondo' AS protocol, sum(value / power(10, 18)) AS amount
+    SELECT 
+      stock_ticker, 
+      contract_address, 
+      'ondo' AS protocol, 
+      network,
+      sum(value / power(10, 18)) AS amount
     FROM ondo_transfer
     WHERE "from" = '0x0000000000000000000000000000000000000000'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     UNION ALL
-    SELECT stock_ticker, contract_address, 'ondo' AS protocol, -sum(value / power(10, 18)) AS amount
+    SELECT 
+    stock_ticker, 
+    contract_address, 
+    'ondo' AS protocol, 
+    network,
+    -sum(value / power(10, 18)) AS amount
     FROM ondo_transfer
     WHERE "to" = '0x0000000000000000000000000000000000000000'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     UNION ALL
-    SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, sum(a.value / power(10, 18)) AS amount
+    SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, network, sum(a.value / power(10, 18)) AS amount
     FROM xstock_transfer a
     LEFT JOIN xstocks_tickers b ON a.contract_address = b.contract_address
     WHERE a."from" = '0x0000000000000000000000000000000000000000'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     UNION ALL
-    SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, -sum(a.value / power(10, 18)) AS amount
+    SELECT b.stock_ticker, b.contract_address, 'xstock' AS protocol, network, -sum(a.value / power(10, 18)) AS amount
     FROM xstock_transfer a
     LEFT JOIN xstocks_tickers b ON a.contract_address = b.contract_address
     WHERE a."to" = '0x0000000000000000000000000000000000000000'
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
     UNION ALL
-    SELECT 'EXOD' as stock_ticker, '213345970' as contract_address, 'securitized' as protocol, sum(amount / power(10,8)) as amount
+    SELECT 'EXOD' as stock_ticker, '213345970' as contract_address, 'securitized' as protocol, 'algorand' as network, sum(amount / power(10,8)) as amount
     FROM algorand_asset_balances
     WHERE amount > 0 AND address != 'MAKF3GL52O5O6ENRRLJSEJRLTR74E323JBZIWMMGLZT5PNZ4NDTEEODN7A'
   ),
   final_prep AS (
-    SELECT stock_ticker, protocol, sum(amount) AS onchain_supply
+    SELECT stock_ticker, protocol, network, sum(amount) AS onchain_supply
     FROM total_supply
-    GROUP BY 1, 2
+    GROUP BY 1, 2, 3
   )
   SELECT
     a.stock_ticker,
     a.protocol,
+    a.network,
     a.onchain_supply,
     b.close_price,
     b.total_marketcap,
@@ -70,6 +81,7 @@ const QUERY = `
 export interface OnchainMarketcapRow {
   stock_ticker: string;
   protocol: string;
+  network: string;
   onchain_supply: string | null;
   close_price: string | null;
   total_marketcap: string | null;
@@ -82,6 +94,7 @@ export async function getOnchainMarketcap(): Promise<OnchainMarketcapRow[]> {
   return (rows ?? []).map((r: Record<string, unknown>) => ({
     stock_ticker: r.stock_ticker as string,
     protocol: r.protocol as string,
+    network: r.network as string,
     onchain_supply: r.onchain_supply != null ? String(r.onchain_supply) : null,
     close_price: r.close_price != null ? String(r.close_price) : null,
     total_marketcap: r.total_marketcap != null ? String(r.total_marketcap) : null,
