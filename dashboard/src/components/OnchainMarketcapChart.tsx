@@ -256,111 +256,119 @@ export default function OnchainMarketcapChart() {
                 </label>
               </div>
               <div className="max-h-[400px] overflow-y-auto">
-              <DataTable
-                data={sortedTableData}
-                rowKey={(item) => item.stock_ticker}
-                onRowClick={(item) => navigate(`/ticker/${item.stock_ticker}`)}
-                sortKey={sortKey}
-                sortDirection={sortDirection}
-                onSort={handleSort}
-                columns={
-                  groupByNetwork
-                    ? [
-                        {
-                          key: 'ticker',
-                          header: 'Ticker',
-                          sortable: true,
-                          sortValue: (item: NetworkRow) => item.stock_ticker,
-                          render: (item: NetworkRow) => (
-                            <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
-                          ),
-                        },
-                        ...networks.map((net) => ({
-                          key: net,
-                          header: net.charAt(0).toUpperCase() + net.slice(1),
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: NetworkRow) => item.networks[net] ?? 0,
-                          render: (item: NetworkRow) => (
-                            <span className="font-mono text-surface-200">
-                              {(item.networks[net] ?? 0) > 0 ? fmtMktcap(item.networks[net]!) : '—'}
-                            </span>
-                          ),
-                        })),
-                        {
-                          key: 'total',
-                          header: 'Total',
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: NetworkRow) => item.total_marketcap,
-                          render: (item: NetworkRow) => (
-                            <span className="font-mono text-surface-100 font-medium">
-                              {fmtMktcap(item.total_marketcap)}
-                            </span>
-                          ),
-                        },
-                      ]
-                    : [
-                        {
-                          key: 'ticker',
-                          header: 'Ticker',
-                          sortable: true,
-                          sortValue: (item: ProtocolRow) => item.stock_ticker,
-                          render: (item: ProtocolRow) => (
-                            <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
-                          ),
-                        },
-                        {
-                          key: 'ondo',
-                          header: 'Ondo',
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: ProtocolRow) => item.ondo_marketcap,
-                          render: (item: ProtocolRow) => (
-                            <span className="font-mono text-surface-200">
-                              {item.ondo_marketcap > 0 ? fmtMktcap(item.ondo_marketcap) : '—'}
-                            </span>
-                          ),
-                        },
-                        {
-                          key: 'xstock',
-                          header: 'Xstock',
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: ProtocolRow) => item.xstock_marketcap,
-                          render: (item: ProtocolRow) => (
-                            <span className="font-mono text-surface-200">
-                              {item.xstock_marketcap > 0 ? fmtMktcap(item.xstock_marketcap) : '—'}
-                            </span>
-                          ),
-                        },
-                        {
-                          key: 'securitize',
-                          header: 'Securitize',
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: ProtocolRow) => item.securitize_marketcap,
-                          render: (item: ProtocolRow) => (
-                            <span className="font-mono text-surface-200">
-                              {item.securitize_marketcap > 0 ? fmtMktcap(item.securitize_marketcap) : '—'}
-                            </span>
-                          ),
-                        },
-                        {
-                          key: 'total',
-                          header: 'Total',
-                          align: 'right' as const,
-                          sortable: true,
-                          sortValue: (item: ProtocolRow) => item.total_marketcap,
-                          render: (item: ProtocolRow) => (
-                            <span className="font-mono text-surface-100 font-medium">
-                              {fmtMktcap(item.total_marketcap)}
-                            </span>
-                          ),
-                        },
-                      ]
-                }
-              />
+              {groupByNetwork ? (
+                <DataTable<NetworkRow>
+                  data={sortedTableData as NetworkRow[]}
+                  rowKey={(item) => item.stock_ticker}
+                  onRowClick={(item) => navigate(`/ticker/${item.stock_ticker}`)}
+                  sortKey={sortKey}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                  columns={[
+                    {
+                      key: 'ticker',
+                      header: 'Ticker',
+                      sortable: true,
+                      sortValue: (item) => item.stock_ticker,
+                      render: (item) => (
+                        <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
+                      ),
+                    },
+                    ...networks.map((net) => ({
+                      key: net,
+                      header: net.charAt(0).toUpperCase() + net.slice(1),
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item: NetworkRow) => item.networks[net] ?? 0,
+                      render: (item: NetworkRow) => (
+                        <span className="font-mono text-surface-200">
+                          {(item.networks[net] ?? 0) > 0 ? fmtMktcap(item.networks[net]!) : '—'}
+                        </span>
+                      ),
+                    })),
+                    {
+                      key: 'total',
+                      header: 'Total',
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item) => item.total_marketcap,
+                      render: (item) => (
+                        <span className="font-mono text-surface-100 font-medium">
+                          {fmtMktcap(item.total_marketcap)}
+                        </span>
+                      ),
+                    },
+                  ]}
+                />
+              ) : (
+                <DataTable<ProtocolRow>
+                  data={sortedTableData as ProtocolRow[]}
+                  rowKey={(item) => item.stock_ticker}
+                  onRowClick={(item) => navigate(`/ticker/${item.stock_ticker}`)}
+                  sortKey={sortKey}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                  columns={[
+                    {
+                      key: 'ticker',
+                      header: 'Ticker',
+                      sortable: true,
+                      sortValue: (item) => item.stock_ticker,
+                      render: (item) => (
+                        <span className="font-mono font-semibold text-accent">{item.stock_ticker}</span>
+                      ),
+                    },
+                    {
+                      key: 'ondo',
+                      header: 'Ondo',
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item) => item.ondo_marketcap,
+                      render: (item) => (
+                        <span className="font-mono text-surface-200">
+                          {item.ondo_marketcap > 0 ? fmtMktcap(item.ondo_marketcap) : '—'}
+                        </span>
+                      ),
+                    },
+                    {
+                      key: 'xstock',
+                      header: 'Xstock',
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item) => item.xstock_marketcap,
+                      render: (item) => (
+                        <span className="font-mono text-surface-200">
+                          {item.xstock_marketcap > 0 ? fmtMktcap(item.xstock_marketcap) : '—'}
+                        </span>
+                      ),
+                    },
+                    {
+                      key: 'securitize',
+                      header: 'Securitize',
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item) => item.securitize_marketcap,
+                      render: (item) => (
+                        <span className="font-mono text-surface-200">
+                          {item.securitize_marketcap > 0 ? fmtMktcap(item.securitize_marketcap) : '—'}
+                        </span>
+                      ),
+                    },
+                    {
+                      key: 'total',
+                      header: 'Total',
+                      align: 'right' as const,
+                      sortable: true,
+                      sortValue: (item) => item.total_marketcap,
+                      render: (item) => (
+                        <span className="font-mono text-surface-100 font-medium">
+                          {fmtMktcap(item.total_marketcap)}
+                        </span>
+                      ),
+                    },
+                  ]}
+                />
+              )}
               </div>
             </Card>
           </div>
