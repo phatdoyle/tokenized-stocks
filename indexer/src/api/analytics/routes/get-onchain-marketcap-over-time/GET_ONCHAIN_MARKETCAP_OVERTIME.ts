@@ -48,7 +48,7 @@ function buildQuery(ticker: string): string {
       left join xstock_deployed b
       on a.contract_address = b.new_token
       WHERE "to" = '0x0000000000000000000000000000000000000000'
-        AND stock_ticker = ${t}
+        AND LEFT(b.symbol, LENGTH(b.symbol) - 1) = ${t}
       GROUP BY 1, 2, 3, 4
       UNION ALL
       SELECT
@@ -61,7 +61,7 @@ function buildQuery(ticker: string): string {
       left join xstock_deployed b
       on a.contract_address = b.new_token
       WHERE "from" = '0x0000000000000000000000000000000000000000'
-        AND stock_ticker = ${t}
+        AND LEFT(b.symbol, LENGTH(b.symbol) - 1) = ${t}
       GROUP BY 1, 2, 3, 4
     ) t
     GROUP BY 1, 2, 3, 4
