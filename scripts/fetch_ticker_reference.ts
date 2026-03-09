@@ -5,7 +5,10 @@
  * and stores the response in ticker_reference.
  *
  * Usage:
- *   pnpm fetch-ticker-reference
+ *   pnpm fetch-ticker-reference [schema]
+ *   tsx fetch_ticker_reference.ts [schema]
+ *
+ *   schema - Target schema (default: DATABASE_SCHEMA env or "stocks")
  *
  * Environment:
  *   DATABASE_URL - PostgreSQL connection string (required)
@@ -116,7 +119,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const schema = process.env.DATABASE_SCHEMA ?? "stocks";
+  const schema = process.argv[2] ?? process.env.DATABASE_SCHEMA ?? "stocks";
   const apiKey = process.env.MASSIVE_API_KEY ?? "Rm6rE5DysttvSmtvpDo2NWA7qsCmErIf";
 
   const client = new pg.Client({ connectionString: databaseUrl });

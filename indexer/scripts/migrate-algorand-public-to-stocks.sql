@@ -303,9 +303,10 @@ ON CONFLICT (tx_id, position) DO UPDATE SET
 -- -------------------------------------------------------
 -- 8. application_call_args -> algorand_application_call_args
 -- -------------------------------------------------------
+-- Note: Ponder schema uses argB64 (camelCase); DB column may be argb64
 INSERT INTO :"target_schema".algorand_application_call_args (
   tx_id,
-  arg_b64,
+  "argB64",
   position
 )
 SELECT
@@ -314,7 +315,7 @@ SELECT
   position
 FROM public.application_call_args
 ON CONFLICT (tx_id, position) DO UPDATE SET
-  arg_b64 = EXCLUDED.arg_b64;
+  "argB64" = EXCLUDED."argB64";
 
 -- -------------------------------------------------------
 -- 9. application_call_foreign_apps -> algorand_application_call_foreign_apps
@@ -351,9 +352,10 @@ ON CONFLICT (tx_id, position) DO UPDATE SET
 -- -------------------------------------------------------
 -- 11. global_state_deltas -> algorand_global_state_deltas
 -- -------------------------------------------------------
+-- Note: Ponder schema uses keyB64 (camelCase); DB column may be keyb64
 INSERT INTO :"target_schema".algorand_global_state_deltas (
   tx_id,
-  key_b64,
+  "keyB64",
   action,
   uint_value,
   bytes_value,
@@ -368,7 +370,7 @@ SELECT
   position
 FROM public.global_state_deltas
 ON CONFLICT (tx_id, position) DO UPDATE SET
-  key_b64 = EXCLUDED.key_b64,
+  "keyB64" = EXCLUDED."keyB64",
   action = EXCLUDED.action,
   uint_value = EXCLUDED.uint_value,
   bytes_value = EXCLUDED.bytes_value;

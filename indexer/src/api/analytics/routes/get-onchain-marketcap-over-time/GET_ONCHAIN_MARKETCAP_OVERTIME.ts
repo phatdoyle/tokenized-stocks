@@ -13,29 +13,56 @@ function buildQuery(ticker: string): string {
       date,
       stock_ticker,
       contract_address,
+      network,
       sum(amount) AS amount
     FROM (
       SELECT
         to_timestamp(block_timestamp)::date AS date,
         stock_ticker,
         contract_address,
+        network,
         sum(value / power(10, 18)) AS amount
       FROM ondo_transfer
       WHERE "from" = '0x0000000000000000000000000000000000000000'
         AND stock_ticker = ${t}
-      GROUP BY 1, 2, 3
+      GROUP BY 1, 2, 3, 4
       UNION ALL
       SELECT
         to_timestamp(block_timestamp)::date AS date,
         stock_ticker,
         contract_address,
+        network,
         -sum(value / power(10, 18)) AS amount
       FROM ondo_transfer
       WHERE "to" = '0x0000000000000000000000000000000000000000'
         AND stock_ticker = ${t}
-      GROUP BY 1, 2, 3
+      GROUP BY 1, 2, 3, 4
+      UNION ALL
+       UNION ALL
+      SELECT
+        to_timestamp(block_timestamp)::date AS date,
+        stock_ticker,
+        contract_address,
+        network,
+        -sum(value / power(10, 18)) AS amount
+      FROM xstock_transfer
+      WHERE "to" = '0x0000000000000000000000000000000000000000'
+        AND stock_ticker = ${t}
+      GROUP BY 1, 2, 3, 4
+      UNION ALL
+       UNION ALL
+      SELECT
+        to_timestamp(block_timestamp)::date AS date,
+        stock_ticker,
+        contract_address,
+        network,
+        sum(value / power(10, 18)) AS amount
+      FROM xstock_transfer
+      WHERE "from" = '0x0000000000000000000000000000000000000000'
+        AND stock_ticker = ${t}
+      GROUP BY 1, 2, 3, 4
     ) t
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
   ),
   tickers AS (
     SELECT DISTINCT stock_ticker, contract_address FROM daily

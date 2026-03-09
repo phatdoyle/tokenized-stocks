@@ -3,14 +3,17 @@ import { executeSQLQuery } from "../../../executeSqlQuery";
 const QUERY = `
   WITH prices AS (
     SELECT
-      a.*,
-      to_timestamp(bar_timestamp / 1000.0)::date AS bar_date,
-      b.share_class_shares_outstanding,
-      (a.close_price * b.share_class_shares_outstanding) AS total_marketcap
-    FROM daily_stock_summary a
-    LEFT JOIN ticker_reference b ON a.ticker = b.ticker
-    WHERE bar_timestamp = (SELECT max(bar_timestamp) FROM daily_stock_summary)
-      AND b.share_class_shares_outstanding IS NOT NULL
+	  a.*,
+	  to_timestamp(a.bar_timestamp / 1000.0)::date AS bar_date,
+	  b.share_class_shares_outstanding,
+	  (a.close_price * b.share_class_shares_outstanding) AS total_marketcap
+	FROM daily_stock_summary a
+	LEFT JOIN ticker_reference b ON a.ticker = b.ticker
+	INNER JOIN (
+	  SELECT ticker, MAX(bar_timestamp) AS max_ts
+	  FROM daily_stock_summary
+	  GROUP BY ticker
+	) latest ON a.ticker = latest.ticker AND a.bar_timestamp = latest.max_ts
   ),
   xstocks_tickers AS (
     SELECT
@@ -42,7 +45,7 @@ const QUERY = `
     GROUP BY 1, 2, 3
     UNION ALL
     SELECT 'EXOD' as stock_ticker, '213345970' as contract_address, 'securitized' as protocol, sum(amount / power(10,8)) as amount
-    FROM asset_balances
+    FROM algorand_asset_balances
     WHERE amount > 0 AND address != 'MAKF3GL52O5O6ENRRLJSEJRLTR74E323JBZIWMMGLZT5PNZ4NDTEEODN7A'
   ),
   final_prep AS (
